@@ -1,6 +1,6 @@
 # szkola_funkcje
 
-Statyczna strona (HTML + JS) — panel do nauki funkcji w C++ / JavaScript. Pliki strony leżą w **`public/`**, żeby deploy na Pages nie wysyłał na CDN całego repozytorium (np. `.github`).
+Statyczna strona (HTML): interaktywny panel do ćwiczenia funkcji w C++. Pliki strony leżą w **`public/`**, żeby deploy na Pages nie wysyłał na CDN całego repozytorium (np. `.github`).
 
 ## Cloudflare Pages
 

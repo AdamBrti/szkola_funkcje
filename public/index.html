@@ -351,6 +351,243 @@
       line-height: 1.7;
     }
 
+    .tasks-intro {
+      margin: 0 0 22px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .task-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .task-item {
+      background: rgba(6, 10, 20, 0.88);
+      border: 1px solid rgba(77, 226, 255, 0.14);
+      border-radius: 18px;
+      padding: 20px 22px;
+    }
+
+    .task-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 14px;
+      margin-bottom: 12px;
+    }
+
+    .task-num {
+      font-weight: 900;
+      font-size: 1.05rem;
+      color: var(--accent);
+      min-width: 2.2em;
+    }
+
+    .task-title {
+      margin: 0;
+      font-size: 1.12rem;
+      flex: 1 1 200px;
+    }
+
+    .task-meter {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 3px;
+      flex-shrink: 0;
+      height: 26px;
+      padding: 3px 6px 4px;
+      border-radius: 10px;
+      background: rgba(5, 11, 25, 0.55);
+      border: 1px solid rgba(77, 226, 255, 0.14);
+    }
+
+    .task-meter__bar {
+      width: 8px;
+      height: 18px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .task-meter--easy .task-meter__bar:nth-child(-n + 2) {
+      background: linear-gradient(180deg, #b8ffd9, var(--accent-2));
+      border-color: rgba(125, 255, 179, 0.45);
+      box-shadow: 0 0 10px rgba(125, 255, 179, 0.25);
+    }
+
+    .task-meter--mid .task-meter__bar:nth-child(-n + 3) {
+      background: linear-gradient(180deg, #fff0c2, #ffd76a);
+      border-color: rgba(255, 215, 106, 0.55);
+      box-shadow: 0 0 10px rgba(255, 215, 106, 0.2);
+    }
+
+    .task-meter--hard .task-meter__bar:nth-child(-n + 5) {
+      background: linear-gradient(180deg, #ffc8de, var(--danger));
+      border-color: rgba(255, 122, 162, 0.55);
+      box-shadow: 0 0 10px rgba(255, 122, 162, 0.28);
+    }
+
+    .task-meter-legend {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px 16px;
+      margin-bottom: 18px;
+      padding: 12px 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(77, 226, 255, 0.14);
+      background: rgba(6, 10, 20, 0.55);
+    }
+
+    .task-meter-legend__row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      flex: 1 1 auto;
+      justify-content: center;
+      min-width: min(100%, 220px);
+    }
+
+    .task-meter-legend__arrow {
+      color: var(--muted);
+      font-size: 1.15rem;
+      line-height: 1;
+      user-select: none;
+    }
+
+    .task-meter-legend__cap {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .task-meter-legend__cap--lo {
+      color: var(--accent-2);
+    }
+
+    .task-meter-legend__cap--hi {
+      color: var(--danger);
+    }
+
+    .task-body {
+      margin: 0;
+      color: #dce9ff;
+      line-height: 1.75;
+    }
+
+    .task-body ul {
+      margin: 10px 0 0;
+      padding-left: 1.25em;
+    }
+
+    .task-body li {
+      margin-bottom: 6px;
+    }
+
+    .task-hint {
+      margin: 14px 0 0;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(77, 226, 255, 0.06);
+      border: 1px solid rgba(77, 226, 255, 0.12);
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+
+    .task-nudge {
+      margin: 10px 0 0;
+      padding: 11px 14px 12px;
+      border-radius: 12px;
+      border-left: 3px solid var(--accent-2);
+      background: rgba(125, 255, 179, 0.06);
+      color: #c8dff0;
+      font-size: 0.92rem;
+      line-height: 1.68;
+    }
+
+    .lesson-extra {
+      margin-top: 24px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: rgba(18, 26, 46, 0.75);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .lesson-extra[open] {
+      background: var(--card);
+    }
+
+    .lesson-extra__summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      user-select: none;
+      transition: background 0.2s ease;
+    }
+
+    .lesson-extra__summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .lesson-extra__summary:hover {
+      background: rgba(77, 226, 255, 0.06);
+    }
+
+    .lesson-extra__summary-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .lesson-extra__summary-text strong {
+      display: block;
+      font-size: 1.08rem;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .lesson-extra__summary-text span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.55;
+      font-weight: 500;
+    }
+
+    .lesson-extra__chev {
+      flex-shrink: 0;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      border: 1px solid rgba(77, 226, 255, 0.28);
+      background: rgba(5, 11, 25, 0.65);
+      display: grid;
+      place-items: center;
+      color: var(--accent);
+      font-size: 1.1rem;
+      line-height: 1;
+      transition: transform 0.25s ease, border-color 0.2s ease;
+    }
+
+    .lesson-extra[open] .lesson-extra__chev {
+      transform: rotate(180deg);
+    }
+
+    .lesson-extra__body {
+      padding: 8px 12px 24px;
+      border-top: 1px solid rgba(77, 226, 255, 0.12);
+    }
+
     @media (max-width: 920px) {
       .grid,
       .code-grid {
@@ -387,19 +624,21 @@
 <body>
   <div class="wrap">
     <section class="hero">
-      <div class="badge">Mini strona do nauki funkcji w C++</div>
+      <div class="badge">Funkcje w C++ — panel interaktywny</div>
       <h1>Panel mocy postaci</h1>
       <p>
-        Wpisz liczbę i zobacz, jak działają funkcje. Najpierw uruchamiasz funkcję w JavaScript,
-        a niżej widzisz, jak podobna funkcja wygląda w języku C++.
+        Wpisz liczbę i uruchamiaj funkcje przyciskami — tak jak wywołuje się je w programie: podajesz dane, funkcja coś robi, widzisz wynik.
+        Niżej masz ten sam pomysł zapisany w <strong>C++</strong>, żebyś mógł go przenieść do Dev-C++.
+        <a href="#zadania-cpp" style="color:var(--accent);font-weight:700;">Zadania do Dev-C++</a> (poziom klasa 8) masz w sekcji niżej na stronie.
+        Opcjonalna <a href="#lesson-extra-panel" style="color:var(--accent-2);font-weight:700;">mini-gra z XP</a> jest zwinięta w osobnym panelu — kliknij, żeby go rozwinąć.
       </p>
     </section>
 
     <section class="grid">
       <article class="card panel">
-        <h2>To jest funkcja w JavaScript</h2>
+        <h2>Panel: wywoływanie funkcji</h2>
         <p class="subtitle">
-          Klikasz przycisk, a program wykonuje konkretną akcję. Każdy przycisk uruchamia inną funkcję.
+          Każdy przycisk to wywołanie innej funkcji — tak jak w kodzie wywołujesz funkcję po nazwie i przekazujesz argument (tutaj: liczbę z pola).
         </p>
 
         <div class="input-group">
@@ -434,7 +673,7 @@
         </div>
 
         <div>
-          <h3 class="mini-title">Przykłady dla ucznia</h3>
+          <h3 class="mini-title">Przykłady z liczbami</h3>
           <p class="tip">
             <strong>kwadrat(5)</strong> daje <strong>25</strong><br>
             <strong>podwoj(5)</strong> daje <strong>10</strong><br>
@@ -452,9 +691,9 @@
     </section>
 
     <section class="card codes">
-      <h2>A tak wygląda to samo w C++</h2>
+      <h2>Zapis funkcji w C++</h2>
       <p class="section-note">
-        Poniżej masz trzy osobne funkcje zapisane w stylu C++. Każda robi coś innego, ale każda przyjmuje liczbę <strong>x</strong>.
+        Poniżej są trzy osobne funkcje w C++. Każda robi coś innego, ale każda przyjmuje liczbę <strong>x</strong>.
       </p>
 
       <div class="code-grid">
@@ -492,16 +731,16 @@
       </div>
 
       <div class="footer-note">
-        <strong>Najważniejsze:</strong> w JavaScript kliknięcie przycisku uruchamia funkcję od razu na stronie,
-        a w C++ podobną funkcję zapisujesz w kodzie programu i wywołujesz w swoim projekcie.
+        <strong>Najważniejsze:</strong> w swoim programie w C++ zapisujesz funkcje tak jak niżej i wywołujesz je z <code>main</code>
+        (albo z innej funkcji) — zamiast przycisku masz po prostu nazwę funkcji i nawias z argumentem.
       </div>
     </section>
 
     <section class="card codes" style="margin-top:24px;">
       <h2>Ciekawsze funkcje (dla zabawy i nauki)</h2>
       <p class="section-note">
-        Te funkcje pokazują, że funkcje mogą robić coś więcej niż tylko proste obliczenia. Tutaj uczeń widzi,
-        że funkcja może losować, sprawdzać warunki, zmieniać wygląd strony i sterować prostą mini grą.
+        Te funkcje pokazują, że funkcje mogą robić coś więcej niż tylko proste obliczenia. Widzisz,
+        że funkcja może losować, sprawdzać warunki, zmieniać kolory panelu i sterować prostą mini grą.
       </p>
 
       <div class="buttons" style="margin-bottom:20px;">
@@ -548,20 +787,29 @@
             <span>void zmienKolor()</span>
           </div>
           <pre><code><span class="type">void</span> <span class="fn">zmienKolor</span>() {
-  <span class="cm">// funkcja zmienia wygląd ekranu</span>
+  <span class="cm">// funkcja zmienia kolory (motyw) panelu</span>
 }</code></pre>
         </article>
       </div>
 
       <div class="footer-note" style="margin-top:18px;">
-        <strong>Pomysł dla uczniów:</strong> zapytaj klasę, która funkcja coś zwraca, a która po prostu wykonuje akcję.
+        <strong>Sprawdź sam:</strong> która z tych funkcji <strong>zwraca</strong> wartość do dalszego kodu, a która raczej <strong>coś robi</strong> (np. wypisuje) bez zwracania liczby?
       </div>
     </section>
 
-    <section class="card codes" style="margin-top:24px;">
+    <details class="lesson-extra" id="lesson-extra-panel">
+      <summary class="lesson-extra__summary">
+        <div class="lesson-extra__summary-text">
+          <strong>Mini-gra z XP (opcjonalnie)</strong>
+          <span>Centrum bohatera i proste funkcje od poziomu — domyślnie zwinięte. Zadania do Dev-C++ są zawsze widoczne pod tym panelem.</span>
+        </div>
+        <span class="lesson-extra__chev" aria-hidden="true">▼</span>
+      </summary>
+      <div class="lesson-extra__body">
+    <section class="card codes" style="margin-top:0;" id="mini-gra">
       <h2>Mini gra i system poziomów</h2>
       <p class="section-note">
-        Tutaj funkcje współpracują ze sobą. Jedna dodaje doświadczenie, druga zwiększa poziom, a trzecia uruchamia prosty atak.
+        Te funkcje współpracują ze sobą: jedna dodaje doświadczenie, druga zwiększa poziom, a trzecia uruchamia prosty atak.
       </p>
 
       <div class="grid" style="grid-template-columns: 1fr 1fr; margin-top:0; gap:18px;">
@@ -621,6 +869,222 @@
 }</code></pre>
           </article>
         </div>
+      </div>
+    </section>
+      </div>
+    </details>
+
+    <section class="card codes" style="margin-top:24px;" id="zadania-cpp">
+      <h2>Zadania w Dev-C++ (poziom klasa 8)</h2>
+      <p class="tasks-intro">
+        Poniżej pięć zadań w <strong>jednym projekcie konsolowym</strong> w Dev-C++.
+        Każde zadanie to osobna <strong>funkcja</strong>, którą wywołujesz z <code>main</code> — tak jak przy przyciskach powyżej:
+        najpierw myślisz „co ma robić funkcja”, potem ją piszesz i testujesz liczbami z treści.
+        <strong>Zacznij od szkieletu</strong> (sekcja „Szablon pliku”) — przepisz go do edytora i dopisuj nagłówki oraz kod według poleceń pod numerami.
+      </p>
+
+      <div class="footer-note" style="margin-bottom:22px;">
+        <strong>Start w Dev-C++:</strong> Plik → Nowy → Projekt → <em>Console Application</em> → C++.
+        Na górze pliku dodaj <code>#include &lt;iostream&gt;</code>. Możesz dopisać <code>using namespace std;</code>
+        albo w ogóle z niego zrezygnować i pisać <code>std::cout</code> zamiast samego <code>cout</code> — wybierz jeden styl i trzymaj się go w całym pliku.
+        Ważne, żeby program się kompilował i dało się go uruchomić (w Dev-C++ często <strong>F9</strong>: skompiluj i uruchom).
+      </div>
+
+      <h3 class="mini-title" style="margin:20px 0 10px;">Szablon pliku do przepisania</h3>
+      <p class="section-note" style="margin-top:0; margin-bottom:14px;">
+        Poniżej gotowy <strong>szkielet</strong>: <code>#include</code>, <code>using namespace std;</code> (albo zostaw i używaj <code>std::</code>),
+        pięć pustych miejsc na <strong>nagłówki funkcji</strong> (sam dopisujesz typ, nazwę i argumenty — tak jak w treści zadań) oraz <code>main</code> z komentarzami, gdzie dodać wywołania.
+        Między komentarzem a pierwszą klamrą <code>{</code> wpisz <strong>jedną linię</strong> z nagłówkiem funkcji, w środku klamer — ciało funkcji.
+      </p>
+
+      <article class="code-card" style="margin-bottom:24px;">
+        <div class="code-head">
+          <strong>Przykład: main.cpp</strong>
+          <span>przepisz do Dev-C++ i uzupełnij</span>
+        </div>
+        <pre><code>#include &lt;iostream&gt;
+using namespace std;   <span class="cm">// opcjonalnie — możesz usunąć i wtedy pisz std::cout / std::cin</span>
+
+<span class="cm">// ----- Zadanie 1: tu JEDNA LINIA — nagłówek funkcji (typ, nazwa, argumenty wg polecenia) -----</span>
+
+
+{
+
+}
+
+<span class="cm">// ----- Zadanie 2: tu JEDNA LINIA — nagłówek funkcji -----</span>
+
+
+{
+
+}
+
+<span class="cm">// ----- Zadanie 3: tu JEDNA LINIA — nagłówek funkcji -----</span>
+
+
+{
+
+}
+
+<span class="cm">// ----- Zadanie 4: tu JEDNA LINIA — nagłówek funkcji -----</span>
+
+
+{
+
+}
+
+<span class="cm">// ----- Zadanie 5: tu JEDNA LINIA — nagłówek funkcji -----</span>
+
+
+{
+
+}
+
+int main()
+{
+    <span class="cm">// Zadanie 1: wczytaj liczbę, wywołaj funkcję, wypisz wynik</span>
+
+
+    <span class="cm">// Zadanie 2: dwa wywołania funkcji pod rząd</span>
+
+
+    <span class="cm">// Zadanie 3: wczytaj dwie liczby, wywołaj funkcję, wypisz wynik</span>
+
+
+    <span class="cm">// Zadanie 4: wczytaj liczbę, na podstawie funkcji wypisz TAK lub NIE</span>
+
+
+    <span class="cm">// Zadanie 5: wczytaj n, wywołaj funkcję, wypisz sumę cyfr</span>
+
+    return 0;
+}</code></pre>
+      </article>
+
+      <div class="footer-note" style="margin-bottom:22px;">
+        <strong>Jak z tego korzystać:</strong> nie musisz zostawiać pustych linii — mogą być tylko po to, żebyś wyraźnie dopisał nagłówek nad <code>{</code>.
+        Kolejność funkcji w pliku może być inna niż 1–5. Każda funkcja ma być zdefiniowana <strong>przed</strong> <code>main</code>
+        albo mieć na górze pliku <strong>prototyp</strong> (jeśli już znasz deklaracje i definicje rozdzielone).
+      </div>
+
+      <div class="task-meter-legend" aria-label="Skala trudności: od mniejszej liczby podświetlonych słupków do większej">
+        <span class="task-meter-legend__cap task-meter-legend__cap--lo">mniej</span>
+        <div class="task-meter-legend__row">
+          <span class="task-meter task-meter--easy" aria-hidden="true"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+          <span class="task-meter-legend__arrow" aria-hidden="true">→</span>
+          <span class="task-meter task-meter--mid" aria-hidden="true"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+          <span class="task-meter-legend__arrow" aria-hidden="true">→</span>
+          <span class="task-meter task-meter--hard" aria-hidden="true"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+        </div>
+        <span class="task-meter-legend__cap task-meter-legend__cap--hi">więcej</span>
+      </div>
+
+      <div class="task-stack">
+        <article class="task-item">
+          <div class="task-top">
+            <span class="task-num">1</span>
+            <h3 class="task-title">Funkcja „plus dziesięć”</h3>
+            <span class="task-meter task-meter--easy" role="img" aria-label="Trudność: niska"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+          </div>
+          <p class="task-body">
+            Napisz funkcję <code>int plusDziesiec(int x)</code>, która <strong>zwraca</strong> wartość o 10 większą niż <code>x</code>.
+            W <code>main</code> wczytaj jedną liczbę całkowitą z klawiatury, wywołaj funkcję i wypisz wynik.
+          </p>
+          <p class="task-hint">
+            <strong>Test:</strong> wpisz <code>4</code> — na wyjściu chcesz zobaczyć <code>14</code>. Funkcja ma tylko <code>return</code> — bez <code>cout</code> w środku.
+          </p>
+          <p class="task-nudge">
+            <strong>Podpowiedź na start:</strong> zrób tak: najpierw w <code>main</code> wczytaj liczbę do zmiennej, dopiero potem wywołaj funkcję z tą zmienną i wypisz wynik. Samą funkcję zostaw „czystą” — tylko liczy i <code>return</code>.
+            Na początek przetestuj na małych liczbach (np. 0, 4, 11). Jak wszystko działa, dopiero wtedy wpisuj większe — tak łatwiej złapać błąd.
+          </p>
+        </article>
+
+        <article class="task-item">
+          <div class="task-top">
+            <span class="task-num">2</span>
+            <h3 class="task-title">Pozdrowienie z funkcji</h3>
+            <span class="task-meter task-meter--easy" role="img" aria-label="Trudność: niska"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+          </div>
+          <p class="task-body">
+            Napisz funkcję <code>void pozdrow()</code>, która <strong>nic nie zwraca</strong>, ale wypisuje w jednej linii dokładnie tekst:
+            <code>Czesc, jestem w C++!</code> (bez polskich znaków, tak jak w cytacie).
+            W <code>main</code> wywołaj tę funkcję dwa razy pod rząd — w oknie konsoli powinny być dwie identyczne linie.
+          </p>
+          <p class="task-hint">
+            <strong>Przypomnienie:</strong> <code>void</code> oznacza „bez zwracania wartości”; używasz <code>cout</code> w środku funkcji.
+          </p>
+          <p class="task-nudge">
+            <strong>Podpowiedź na start:</strong> wypisz tekst jednym <code>cout</code> w cudzysłowie i porównaj literka w literkę z poleceniem (przecinki, spacje, wykrzyknik).
+            Jak masz dwa wywołania pod rząd, między nimi <strong>nie dokładaj</strong> w <code>main</code> dodatkowej „pustej linii” (<code>endl</code> albo drugi enter wypisania) — wtedy zamiast dwóch takich samych linii zobaczysz przerwę pośrodku.
+          </p>
+        </article>
+
+        <article class="task-item">
+          <div class="task-top">
+            <span class="task-num">3</span>
+            <h3 class="task-title">Która liczba jest większa?</h3>
+            <span class="task-meter task-meter--mid" role="img" aria-label="Trudność: średnia"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+          </div>
+          <p class="task-body">
+            Napisz funkcję <code>int wieksza(int a, int b)</code>, która <strong>zwraca</strong> większą z dwóch liczb
+            (gdy są równe, zwróć którąkolwiek). W <code>main</code> wczytaj dwie liczby i wypisz wynik wywołania funkcji.
+          </p>
+          <p class="task-hint">
+            <strong>Test:</strong> wejście <code>7</code> i <code>15</code> → wynik <code>15</code>. Wejście <code>20</code> i <code>20</code> → <code>20</code>.
+            Wskazówka: wystarczy <code>if</code> / <code>else</code> albo operator warunkowy — oba sposoby są OK.
+          </p>
+          <p class="task-nudge">
+            <strong>Podpowiedź na start:</strong> zanim odpalisz program, na kartce zapisz przykład: „pierwsza liczba większa”, „druga większa”, „dwie takie same” — i obok jaki wynik ma być. Potem sprawdź, czy program robi to samo.
+            Uważaj, żeby najpierw wczytywać tę liczbę, którą nazwałeś <code>a</code>, a potem <code>b</code> — jak zamienisz kolejność w <code>cin</code>, program dalej się uruchomi, ale wynik może być odwrotny niż myślisz.
+            Możesz wpisać obie liczby w jednej linii z spacją pośrodku — nie musisz klikać Entera dwa razy.
+          </p>
+        </article>
+
+        <article class="task-item">
+          <div class="task-top">
+            <span class="task-num">4</span>
+            <h3 class="task-title">Czy liczba jest parzysta?</h3>
+            <span class="task-meter task-meter--mid" role="img" aria-label="Trudność: średnia"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+          </div>
+          <p class="task-body">
+            Napisz funkcję <code>bool czyParzysta(int n)</code>, która zwraca <code>true</code>, gdy <code>n</code> jest parzyste,
+            i <code>false</code> w przeciwnym razie. W <code>main</code> wczytaj jedną liczbę i wypisz słowo <code>TAK</code> albo <code>NIE</code>
+            (wielkimi literami), w zależności od wyniku funkcji.
+          </p>
+          <p class="task-hint">
+            <strong>Test:</strong> <code>8</code> → <code>TAK</code>. <code>7</code> → <code>NIE</code>. <code>0</code> → <code>TAK</code>.
+            Operator reszty z dzielenia: <code>%</code>.
+          </p>
+          <p class="task-nudge">
+            <strong>Podpowiedź na start:</strong> funkcja tylko mówi w środku programu „tak” albo „nie” (<code>true</code> / <code>false</code>). Ciebie interesuje, co <strong>wypisać człowiekowi</strong> — więc w <code>main</code> zrób <code>if</code>: jeśli wynik funkcji jest prawdą, wypisz <code>TAK</code>, w przeciwnym razie <code>NIE</code>.
+            Jak spróbujesz od razu <code>cout</code> z samej funkcji, często zobaczysz <code>0</code> i <code>1</code> zamiast słów — dlatego w <code>main</code> robisz <code>if</code> i wypisujesz <code>TAK</code> albo <code>NIE</code>.
+            Koniecznie sprawdź też liczbę <code>0</code> — zero jest parzyste, więc powinno wyjść <code>TAK</code>.
+          </p>
+        </article>
+
+        <article class="task-item">
+          <div class="task-top">
+            <span class="task-num">5</span>
+            <h3 class="task-title">Suma cyfr liczby</h3>
+            <span class="task-meter task-meter--hard" role="img" aria-label="Trudność: wysoka"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+          </div>
+          <p class="task-body">
+            Napisz funkcję <code>int sumaCyfr(int n)</code>, która dla liczby <strong>nieujemnej</strong> <code>n</code> zwraca sumę jej cyfr w systemie dziesiętnym.
+            Przykład: <code>n = 308</code> → cyfry 3, 0, 8 → wynik <code>11</code>. W <code>main</code> wczytaj <code>n</code> i wypisz wynik funkcji.
+          </p>
+          <p class="task-body" style="margin-top:12px;">
+            <strong>Na plus:</strong> upewnij się, że dla <code>n == 0</code> wynik to <code>0</code> (to dobry test, czy pętla i suma są pomyślane).
+          </p>
+          <p class="task-hint">
+            <strong>Wskazówka algorytmiczna:</strong> w pętli <code>while</code> bierz ostatnią cyfrę przez <code>n % 10</code>, dodawaj do sumy,
+            potem <code>n = n / 10</code> (dzielenie całkowite). Pętla kończy się, gdy <code>n</code> spadnie do zera — ale osobno obsłuż samo zero na początku, jeśli Twój kod tego potrzebuje.
+          </p>
+          <p class="task-nudge">
+            <strong>Podpowiedź na start:</strong> weź liczbę z zadania (np. 308) i na kartce rozpisz: ostatnia cyfra to ile? potem „ucięta” liczba bez ostatniej cyfry to ile? — tak kilka razy, aż dojdiesz do zera. To jest dokładnie to, co ma robić pętla w programie: „weź ostatnią cyfrę”, „dodaj do sumy”, „usuń ostatnią cyfrę”.
+            Ostatnia cyfra to zawsze reszta z dzielenia przez 10 (<code>% 10</code>) — czyli bierzesz cyfrę od <strong>prawej strony</strong> zapisu, nie od lewej.
+            Dla zera policz w głowie: suma cyfr to 0. Jak masz warunek pętli typu „dopóki liczba jest większa od zera”, to przy zerze pętla się nie wykona i suma zostaje 0 — często to już jest dobre rozwiązanie, bez dokładania drugiego, skomplikowanego warunku „tylko dla zera”.
+            Jak po funkcji chcesz jeszcze raz pokazać użytkownikowi tę samą liczbę, którą wpisał, zapamiętaj ją w <code>main</code> w osobnej zmiennej <strong>przed</strong> wywołaniem funkcji (bo w środku funkcji liczba może się „kurczyć” krok po kroku).
+          </p>
+        </article>
       </div>
     </section>
 
@@ -756,7 +1220,7 @@
       root.style.setProperty('--accent', current.accent);
       root.style.setProperty('--accent-2', current.accent2);
 
-      pokazFunWynik('Funkcja: zmienKolor', 'Funkcja zmieniła wygląd strony.', 'WOW', '🎨 nowy motyw aktywny');
+      pokazFunWynik('Funkcja: zmienKolor', 'Funkcja zmieniła kolory panelu (motyw).', 'WOW', '🎨 nowy motyw aktywny');
     }
 
     function aktualizujBohatera(message) {
@@ -801,16 +1265,30 @@
     }
 
     aktualizujBohatera('Start gry: bohater czeka na ruch.');
+
+    (function () {
+      var panel = document.getElementById('lesson-extra-panel');
+      if (!panel) return;
+      function openExtraFromHash() {
+        var h = (location.hash || '').replace(/^#/, '');
+        if (h === 'lesson-extra-panel' || h === 'mini-gra') {
+          panel.open = true;
+          if (h === 'mini-gra') {
+            requestAnimationFrame(function () {
+              var el = document.getElementById('mini-gra');
+              if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+          }
+        }
+      }
+      openExtraFromHash();
+      window.addEventListener('hashchange', openExtraFromHash);
+    })();
   </script>
 
   <!--
-    Ta strona pokazuje działanie funkcji w prosty sposób:
-    - uczeń wpisuje liczbę,
-    - kliknięcie przycisku uruchamia konkretną funkcję JavaScript,
-    - wynik pojawia się od razu na ekranie,
-    - niżej uczeń widzi, jak podobna funkcja wygląda w C++.
-    Dzięki temu łatwo połączyć teorię z praktyką i zobaczyć, że funkcja
-    to po prostu fragment kodu wykonujący określone zadanie.
+    Interaktywna strona o funkcjach w C++: wpisywanie liczb, przyciski = wywołania funkcji,
+    wynik w panelu, niżej przykłady w C++ i zadania do Dev-C++.
   -->
 </body>
 </html>
