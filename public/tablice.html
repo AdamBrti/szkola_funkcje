@@ -41,8 +41,8 @@
     a { color: inherit; }
     .topbar {
       position: sticky;
-      top: 0;
-      z-index: 20;
+      top: 64px;
+      z-index: 90;
       backdrop-filter: blur(16px);
       background: rgba(2,6,23,.72);
       border-bottom: 1px solid var(--line);
@@ -538,6 +538,10 @@
 
       .site-nav__links {
         justify-content: flex-start;
+      }
+
+      .topbar {
+        top: 112px;
       }
     }
   </style>
