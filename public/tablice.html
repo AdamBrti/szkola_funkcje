@@ -1,0 +1,1065 @@
+﻿<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tablice w C++ — Programowanie SP8</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --card: rgba(255,255,255,.09);
+      --card2: rgba(255,255,255,.14);
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --accent: #38bdf8;
+      --accent2: #a78bfa;
+      --good: #22c55e;
+      --warn: #f59e0b;
+      --bad: #ef4444;
+      --line: rgba(255,255,255,.16);
+      --shadow: 0 22px 70px rgba(0,0,0,.35);
+      --radius: 24px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at 12% 10%, rgba(56,189,248,.28), transparent 32%),
+        radial-gradient(circle at 86% 8%, rgba(167,139,250,.28), transparent 30%),
+        radial-gradient(circle at 50% 70%, rgba(34,197,94,.12), transparent 35%),
+        linear-gradient(135deg, #020617 0%, #111827 55%, #172554 100%);
+      min-height: 100vh;
+    }
+
+    a { color: inherit; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(16px);
+      background: rgba(2,6,23,.72);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topbar-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 12px 18px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+      letter-spacing: .2px;
+      white-space: nowrap;
+    }
+
+    .badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 12px 30px rgba(56,189,248,.3);
+    }
+
+    .progress-wrap {
+      flex: 1;
+      max-width: 560px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
+    .progress {
+      height: 10px;
+      background: rgba(255,255,255,.1);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress > div {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2), var(--good));
+      border-radius: 999px;
+      transition: width .25s ease;
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 22px 18px 70px;
+    }
+
+    .hero {
+      min-height: calc(100vh - 70px);
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      align-items: center;
+      gap: 36px;
+      padding: 54px 0;
+    }
+
+    .hero h1 {
+      font-size: clamp(44px, 8vw, 92px);
+      line-height: .92;
+      margin: 0 0 18px;
+      letter-spacing: -3px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #e0f2fe, #38bdf8, #c4b5fd);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .lead {
+      font-size: clamp(18px, 2.2vw, 26px);
+      line-height: 1.35;
+      color: var(--muted);
+      max-width: 760px;
+      margin: 0 0 26px;
+    }
+
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    button, .btn {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      color: white;
+      font-weight: 800;
+      padding: 13px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #0284c7, #7c3aed);
+      box-shadow: 0 14px 36px rgba(56,189,248,.22);
+      transition: transform .15s ease, filter .15s ease, opacity .15s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    button:hover, .btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
+    button.secondary { background: rgba(255,255,255,.12); border: 1px solid var(--line); box-shadow: none; }
+    button.good { background: linear-gradient(135deg, #16a34a, #22c55e); }
+    button.warn { background: linear-gradient(135deg, #d97706, #f59e0b); }
+    button.bad { background: linear-gradient(135deg, #dc2626, #ef4444); }
+    button:disabled { cursor: not-allowed; opacity: .55; transform: none; }
+
+    .lesson-map {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .map-item, .card, .section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .map-item {
+      padding: 16px;
+      min-height: 112px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      justify-content: center;
+      transition: transform .2s ease, background .2s ease;
+    }
+
+    .map-item:hover { transform: translateY(-4px); background: var(--card2); }
+    .map-item strong { font-size: 18px; }
+    .map-item span { color: var(--muted); font-size: 14px; }
+
+    .section {
+      margin: 28px 0;
+      padding: clamp(20px, 4vw, 36px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section::before {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: rgba(56,189,248,.08);
+      right: -80px;
+      top: -80px;
+      pointer-events: none;
+    }
+
+    .section h2 {
+      font-size: clamp(28px, 4vw, 44px);
+      margin: 0 0 10px;
+      letter-spacing: -1px;
+    }
+
+    .section p { color: var(--muted); line-height: 1.65; font-size: 17px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+    .mini-card {
+      background: rgba(2,6,23,.42);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    .code {
+      background: #020617;
+      border: 1px solid rgba(148,163,184,.25);
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 16px 0;
+    }
+
+    .code-title {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(148,163,184,.2);
+      color: #bae6fd;
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    pre {
+      margin: 0;
+      padding: 16px;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 15px;
+      line-height: 1.55;
+      color: #e2e8f0;
+    }
+
+    code { font-family: var(--mono); }
+    .kw { color: #93c5fd; font-weight: 700; }
+    .num { color: #fbbf24; }
+    .str { color: #86efac; }
+    .fn { color: #c4b5fd; }
+    .comment { color: #94a3b8; }
+
+    .memory-box {
+      min-height: 118px;
+      border: 2px dashed rgba(56,189,248,.45);
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      font-size: 38px;
+      font-weight: 900;
+      background: rgba(56,189,248,.08);
+    }
+
+    .numbers { display: flex; gap: 10px; flex-wrap: wrap; margin: 18px 0; }
+    .pill {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid var(--line);
+      font-weight: 900;
+    }
+
+    .array-row {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(84px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .cell {
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.07));
+      border: 1px solid var(--line);
+      padding: 14px 8px;
+      text-align: center;
+      min-height: 104px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 9px;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+      cursor: pointer;
+    }
+
+    .cell:hover, .cell.active {
+      transform: translateY(-5px) scale(1.02);
+      border-color: rgba(56,189,248,.8);
+      background: rgba(56,189,248,.18);
+    }
+
+    .idx { color: #bae6fd; font-family: var(--mono); font-weight: 900; }
+    .val { font-size: 32px; font-weight: 1000; }
+
+    .feedback {
+      margin-top: 12px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      min-height: 50px;
+    }
+    .feedback.good { border-color: rgba(34,197,94,.7); background: rgba(34,197,94,.12); }
+    .feedback.bad { border-color: rgba(239,68,68,.7); background: rgba(239,68,68,.12); }
+
+    .choice-list { display: grid; gap: 10px; margin-top: 14px; }
+    .choice {
+      text-align: left;
+      justify-content: flex-start;
+      border-radius: 16px;
+      background: rgba(255,255,255,.1);
+      border: 1px solid var(--line);
+      box-shadow: none;
+      font-family: var(--mono);
+      font-size: 15px;
+      width: 100%;
+    }
+
+    .inline-task {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin: 16px 0;
+    }
+
+    input[type="number"], input[type="text"] {
+      background: rgba(2,6,23,.55);
+      color: white;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      outline: none;
+      font-size: 16px;
+      max-width: 140px;
+    }
+
+    input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(56,189,248,.13); }
+
+    .explain { display: none; }
+    .explain.show { display: block; }
+    .line-note {
+      border-left: 4px solid var(--accent);
+      padding: 10px 14px;
+      margin: 8px 0;
+      background: rgba(56,189,248,.08);
+      border-radius: 0 14px 14px 0;
+      color: var(--muted);
+    }
+
+    .sim-inputs { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 18px; }
+    .sim-field { display: grid; gap: 6px; font-weight: 800; color: var(--muted); }
+    .sim-field span { font-size: 13px; }
+    .sim-field input { width: 110px; }
+    .output {
+      font-family: var(--mono);
+      background: #020617;
+      border: 1px solid rgba(148,163,184,.25);
+      padding: 16px;
+      border-radius: 18px;
+      min-height: 80px;
+      white-space: pre-wrap;
+    }
+
+    .quiz-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin: 14px 0;
+    }
+    .timer {
+      font-size: 28px;
+      font-weight: 1000;
+      padding: 10px 16px;
+      border-radius: 18px;
+      background: rgba(245,158,11,.15);
+      border: 1px solid rgba(245,158,11,.5);
+    }
+    .question {
+      background: rgba(2,6,23,.46);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 16px;
+      margin: 14px 0;
+    }
+    .question h3 { margin: 0 0 12px; font-size: 18px; }
+    .answers { display: grid; gap: 8px; }
+    label.answer {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      cursor: pointer;
+    }
+    label.answer:hover { background: rgba(255,255,255,.11); }
+    .results { display: none; margin-top: 18px; }
+    .result-big { font-size: clamp(30px, 5vw, 58px); font-weight: 1000; margin: 8px 0; }
+    .review-item { padding: 12px; border-radius: 16px; border: 1px solid var(--line); margin: 10px 0; background: rgba(255,255,255,.07); }
+    .review-item.correct { border-color: rgba(34,197,94,.55); }
+    .review-item.wrong { border-color: rgba(239,68,68,.55); }
+
+    .summary-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .summary-list div {
+      background: rgba(255,255,255,.08);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .floating-score {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 30;
+      background: rgba(2,6,23,.82);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 14px;
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .hidden { display: none !important; }
+
+    @keyframes pop {
+      0% { transform: scale(.8); opacity: .4; }
+      70% { transform: scale(1.08); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+    .pop { animation: pop .35s ease; }
+
+    @media (max-width: 860px) {
+      .hero, .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .lesson-map { grid-template-columns: 1fr; }
+      .array-row { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
+      .summary-list { grid-template-columns: 1fr; }
+      .topbar-inner { align-items: flex-start; flex-direction: column; }
+      .progress-wrap { width: 100%; max-width: none; }
+    }
+  
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(80, 225, 255, 0.18);
+      background: rgba(5, 11, 25, 0.86);
+      backdrop-filter: blur(16px);
+    }
+
+    .site-nav__inner {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .site-nav__brand {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .site-nav__links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .site-nav__link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 800;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .site-nav__link:hover,
+    .site-nav__link--active {
+      color: var(--accent);
+      border-color: rgba(77, 226, 255, 0.26);
+      background: rgba(77, 226, 255, 0.08);
+    }
+
+    @media (max-width: 700px) {
+      .site-nav__inner {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 12px 0;
+      }
+
+      .site-nav__links {
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Tematy programowania">
+    <div class="site-nav__inner">
+      <a class="site-nav__brand" href="index.html">Programowanie SP8</a>
+      <div class="site-nav__links">
+        <a class="site-nav__link" href="index.html">Start</a>
+        <a class="site-nav__link" href="funkcje.html">Funkcje</a>
+        <a class="site-nav__link site-nav__link--active" href="tablice.html">Tablice</a>
+      </div>
+    </div>
+  </nav>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><div class="badge">🧠</div><span>Tablice w C++</span></div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Postęp lekcji</span><span id="progressText">0%</span></div>
+        <div class="progress"><div id="progressBar"></div></div>
+      </div>
+      <a class="btn" href="#quiz">Quiz</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero" id="start">
+      <div>
+        <h1><span class="gradient-text">Tablice</span><br>w C++</h1>
+        <p class="lead">Jak zapamiętać wiele liczb bez tworzenia wielu zmiennych? Dzisiaj zrobimy z pamięci komputera szafkę z ponumerowanymi przegródkami.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#problem">🚀 Rozpocznij lekcję</a>
+          <a class="btn secondary" href="#plan">📋 Plan 45 minut</a>
+        </div>
+      </div>
+      <div class="lesson-map" id="plan">
+        <div class="map-item"><strong>1. Problem</strong><span>Dlaczego jedna zmienna to za mało?</span></div>
+        <div class="map-item"><strong>2. Tablica</strong><span>Szafka z indeksami od zera.</span></div>
+        <div class="map-item"><strong>3. Kod</strong><span>Deklaracja, wprowadzanie i wypisywanie.</span></div>
+        <div class="map-item"><strong>4. Quiz</strong><span>Wynik, procent i ocena 3–6.</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="problem" data-section>
+      <h2>1. Problem wielu zmiennych</h2>
+      <p>Wyobraź sobie, że użytkownik wpisuje liczby: <strong>5, 27, 18, 3, 4</strong>. Jedna zwykła zmienna przechowa tylko jedną wartość naraz. Każda kolejna liczba nadpisze poprzednią.</p>
+      <div class="grid-2">
+        <div class="mini-card">
+          <h3>🎯 Jedna zmienna</h3>
+          <div class="numbers" id="fallNumbers"></div>
+          <button onclick="runOneVariableDemo()">Uruchom animację</button>
+        </div>
+        <div class="mini-card">
+          <h3>Komórka pamięci zmiennej <code>a</code></h3>
+          <div class="memory-box" id="singleMemory">?</div>
+          <div class="feedback" id="singleFeedback">Kliknij animację. Zobaczysz, że na końcu zostaje tylko ostatnia liczba.</div>
+        </div>
+      </div>
+      <div class="code">
+        <div class="code-title">Bez tablic robi się niewygodnie</div>
+        <pre><span class="kw">int</span> liczba1 = <span class="num">5</span>;
+<span class="kw">int</span> liczba2 = <span class="num">27</span>;
+<span class="kw">int</span> liczba3 = <span class="num">18</span>;
+<span class="kw">int</span> liczba4 = <span class="num">3</span>;
+<span class="kw">int</span> liczba5 = <span class="num">4</span>;</pre>
+      </div>
+    </section>
+
+    <section class="section" id="array" data-section>
+      <h2>2. Czym jest tablica?</h2>
+      <p>Tablica to kilka komórek pamięci pod jedną nazwą. Można ją traktować jak szafkę z ponumerowanymi przegródkami. Numer przegródki nazywamy <strong>indeksem</strong>.</p>
+      <div class="array-row" id="arrayCells"></div>
+      <div class="feedback" id="arrayInfo">Kliknij dowolną komórkę tablicy.</div>
+    </section>
+
+    <section class="section" id="declare" data-section>
+      <h2>3. Deklaracja tablicy</h2>
+      <p>W C++ najpierw podajemy typ danych, potem nazwę tablicy, a w nawiasach kwadratowych liczbę elementów.</p>
+      <div class="grid-3">
+        <div class="mini-card"><h3>Typ</h3><p><code>int</code> — liczby całkowite</p></div>
+        <div class="mini-card"><h3>Nazwa</h3><p><code>a</code> albo <code>dane</code></p></div>
+        <div class="mini-card"><h3>Liczba pól</h3><p><code>[5]</code> oznacza 5 elementów</p></div>
+      </div>
+      <div class="code"><div class="code-title">Przykłady deklaracji</div><pre><span class="kw">int</span> dane[<span class="num">5</span>];
+
+<span class="kw">const int</span> N = <span class="num">5</span>;
+<span class="kw">int</span> a[N];</pre></div>
+      <div class="mini-card">
+        <h3>🧩 Ćwiczenie: wybierz poprawną deklarację tablicy z 10 liczbami całkowitymi</h3>
+        <div class="choice-list">
+          <button class="choice" onclick="checkDeclaration(false, this)">int tablica;</button>
+          <button class="choice" onclick="checkDeclaration(true, this)">int tablica[10];</button>
+          <button class="choice" onclick="checkDeclaration(false, this)">tablica int[10];</button>
+          <button class="choice" onclick="checkDeclaration(false, this)">int tablica(10);</button>
+        </div>
+        <div class="feedback" id="declFeedback">Wybierz odpowiedź.</div>
+      </div>
+    </section>
+
+    <section class="section" id="indexes" data-section>
+      <h2>4. Indeksy zaczynają się od 0</h2>
+      <p>To najważniejsza rzecz: pierwszy element tablicy w C++ ma indeks <code>0</code>, nie <code>1</code>. Dla tablicy pięcioelementowej ostatni indeks to <code>4</code>.</p>
+      <div class="code"><div class="code-title">Odwoływanie się do elementów</div><pre>a[<span class="num">0</span>]  a[<span class="num">1</span>]  a[<span class="num">2</span>]  a[<span class="num">3</span>]  a[<span class="num">4</span>]
+
+<span class="comment">// ogólnie dla N elementów:</span>
+a[<span class="num">0</span>], a[<span class="num">1</span>], ..., a[N - <span class="num">1</span>]</pre></div>
+      <div class="mini-card">
+        <h3>⚡ Mini-zadanie</h3>
+        <p>Jaki indeks ma ostatni element tablicy <code>int dane[8];</code>?</p>
+        <div class="inline-task">
+          <input type="number" id="lastIndexAnswer" placeholder="np. 7" />
+          <button onclick="checkLastIndex()">Sprawdź</button>
+        </div>
+        <div class="feedback" id="lastIndexFeedback">Podpowiedź: ostatni indeks to liczba elementów minus 1.</div>
+      </div>
+    </section>
+
+    <section class="section" id="input" data-section>
+      <h2>5. Wprowadzanie danych</h2>
+      <p>Funkcja <code>wprowadz_dane()</code> przechodzi po kolejnych indeksach i wpisuje liczby do kolejnych komórek tablicy.</p>
+      <div class="code"><div class="code-title">Funkcja wprowadzająca dane</div><pre><span class="kw">void</span> <span class="fn">wprowadz_dane</span>()
+{
+    <span class="kw">for</span>(<span class="kw">int</span> i = <span class="num">0</span>; i &lt; N; i++)
+    {
+        cout &lt;&lt; <span class="str">"Podaj dana nr "</span> &lt;&lt; i &lt;&lt; <span class="str">": "</span>;
+        cin &gt;&gt; a[i];
+    }
+}</pre></div>
+      <div class="summary-list">
+        <div>đź” <code>for</code> powtarza instrukcje kilka razy.</div>
+        <div>📍 <code>i</code> wskazuje aktualny indeks tablicy.</div>
+        <div>⌨️ <code>cin &gt;&gt; a[i];</code> wpisuje liczbę do komórki.</div>
+        <div>🛑 <code>i &lt; N</code> pilnuje, żeby nie wyjść poza tablicę.</div>
+      </div>
+    </section>
+
+    <section class="section" id="output" data-section>
+      <h2>6. Wypisywanie danych</h2>
+      <p>Wypisywanie wygląda podobnie. Pętla przechodzi po indeksach i pokazuje zawartość każdej komórki.</p>
+      <div class="code"><div class="code-title">Funkcja wypisująca dane</div><pre><span class="kw">void</span> <span class="fn">wyprowadz_dane</span>()
+{
+    <span class="kw">for</span>(<span class="kw">int</span> i = <span class="num">0</span>; i &lt; N; i++)
+    {
+        cout &lt;&lt; <span class="str">"Dane["</span> &lt;&lt; i &lt;&lt; <span class="str">"] = "</span> &lt;&lt; a[i] &lt;&lt; endl;
+    }
+}</pre></div>
+    </section>
+
+    <section class="section" id="full" data-section>
+      <h2>7. Pełny program</h2>
+      <p>To kompletny przykład: najpierw tworzymy tablicę, potem wprowadzamy dane, a na końcu je wypisujemy.</p>
+      <div class="hero-actions"><button onclick="toggleExplain(true)">Pokaż wyjaśnienia</button><button class="secondary" onclick="toggleExplain(false)">Ukryj wyjaśnienia</button></div>
+      <div class="code"><div class="code-title">Tablica.cpp</div><pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">using namespace</span> std;
+
+<span class="kw">const int</span> N = <span class="num">5</span>;
+<span class="kw">int</span> a[N];
+
+<span class="kw">void</span> <span class="fn">wprowadz_dane</span>()
+{
+    <span class="kw">for</span>(<span class="kw">int</span> i = <span class="num">0</span>; i &lt; N; i++)
+    {
+        cout &lt;&lt; <span class="str">"Podaj dana nr "</span> &lt;&lt; i &lt;&lt; <span class="str">": "</span>;
+        cin &gt;&gt; a[i];
+    }
+}
+
+<span class="kw">void</span> <span class="fn">wyprowadz_dane</span>()
+{
+    <span class="kw">for</span>(<span class="kw">int</span> i = <span class="num">0</span>; i &lt; N; i++)
+    {
+        cout &lt;&lt; <span class="str">"Dane["</span> &lt;&lt; i &lt;&lt; <span class="str">"] = "</span> &lt;&lt; a[i] &lt;&lt; endl;
+    }
+}
+
+<span class="kw">int</span> <span class="fn">main</span>()
+{
+    wprowadz_dane();
+    wyprowadz_dane();
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre></div>
+      <div class="explain" id="explainBox">
+        <div class="line-note"><code>const int N = 5;</code> — ustala, że tablica ma 5 elementów.</div>
+        <div class="line-note"><code>int a[N];</code> — tworzy tablicę liczb całkowitych.</div>
+        <div class="line-note"><code>void wprowadz_dane()</code> — funkcja nic nie zwraca i nie ma parametrów.</div>
+        <div class="line-note"><code>for(int i = 0; i &lt; N; i++)</code> — przechodzi po indeksach 0, 1, 2, 3, 4.</div>
+        <div class="line-note"><code>cin &gt;&gt; a[i];</code> — wpisuje wartość do aktualnej komórki.</div>
+        <div class="line-note"><code>wyprowadz_dane();</code> — wywołuje funkcję wypisującą tablicę.</div>
+      </div>
+    </section>
+
+    <section class="section" id="simulator" data-section>
+      <h2>8. Symulator tablicy</h2>
+      <p>Wpisz 5 liczb. Po kliknięciu przycisku zobaczysz, jak pętla <code>for</code> zapisuje kolejne wartości do komórek <code>a[0]</code>, <code>a[1]</code>, ..., <code>a[4]</code>.</p>
+      <div class="mini-card">
+        <strong>Tryb działania:</strong> najpierw wpisujemy dane tak jak przez <code>cin &gt;&gt; a[i]</code>, potem wypisujemy je tak jak przez <code>cout &lt;&lt; a[i]</code>.
+      </div>
+      <div class="sim-inputs" id="simInputs"></div>
+      <div class="hero-actions">
+        <button type="button" onclick="loadSimulator()">1. Wprowadź dane do tablicy</button>
+        <button type="button" class="secondary" onclick="printSimulator()">2. Wypisz dane</button>
+        <button type="button" class="secondary" onclick="resetSimulator()">Wyczyść</button>
+      </div>
+      <div class="array-row" id="simCells"></div>
+      <div class="output" id="simOutput">Tutaj pojawi się wynik programu.</div>
+    </section>
+
+    <section class="section" id="quiz" data-section>
+      <h2>9. Quiz końcowy</h2>
+      <p>Masz 5 minut. Po zakończeniu zobaczysz punkty, procent, ocenę i listę poprawnych oraz błędnych odpowiedzi.</p>
+      <div class="quiz-head">
+        <button class="good" id="startQuizBtn" onclick="startQuiz()">Rozpocznij quiz</button>
+        <div class="timer" id="timer">05:00</div>
+      </div>
+      <form id="quizForm"></form>
+      <div class="hero-actions"><button id="finishQuizBtn" class="warn hidden" onclick="finishQuiz()" type="button">Zakończ quiz</button><button id="retryQuizBtn" class="secondary hidden" onclick="resetQuiz()" type="button">Spróbuj ponownie</button></div>
+      <div class="results" id="results"></div>
+    </section>
+
+    <section class="section" id="summary" data-section>
+      <h2>Co musisz zapamiętać?</h2>
+      <div class="summary-list">
+        <div>🧠 Tablica przechowuje wiele wartości pod jedną nazwą.</div>
+        <div>🔢 Indeksy w C++ zaczynają się od <code>0</code>.</div>
+        <div>📦 <code>int a[5];</code> tworzy 5-elementową tablicę liczb całkowitych.</div>
+        <div>đźŹ Ostatni indeks to zawsze <code>liczba elementĂłw - 1</code>.</div>
+        <div>đź” PÄ™tla <code>for</code> pomaga przejĹ›Ä‡ po wszystkich elementach.</div>
+        <div>⌨️ <code>cin &gt;&gt; a[i]</code> wpisuje dane, a <code>cout &lt;&lt; a[i]</code> je wypisuje.</div>
+      </div>
+    </section>
+  </main>
+
+  <div class="floating-score" id="motivation">â­ Cel: zrozumieÄ‡ indeksy od zera</div>
+
+  <script>
+    const demoValues = [5, 27, 18, 3, 4];
+    const sections = Array.from(document.querySelectorAll('[data-section]'));
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const motivation = document.getElementById('motivation');
+
+    function updateProgress() {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const percent = Math.max(0, Math.min(100, Math.round((scrollTop / docHeight) * 100)));
+      progressBar.style.width = percent + '%';
+      progressText.textContent = percent + '%';
+      if (percent > 75) motivation.textContent = '🔥 Już prawie koniec lekcji';
+      else if (percent > 45) motivation.textContent = '💪 Dobrze idzie — tablica to szafka';
+      else if (percent > 20) motivation.textContent = '📍 Pamiętaj: pierwszy indeks to 0';
+      else motivation.textContent = 'â­ Cel: zrozumieÄ‡ indeksy od zera';
+    }
+    window.addEventListener('scroll', updateProgress);
+    updateProgress();
+
+    function initNumbers() {
+      document.getElementById('fallNumbers').innerHTML = demoValues.map(v => `<span class="pill">${v}</span>`).join('');
+    }
+
+    async function runOneVariableDemo() {
+      const mem = document.getElementById('singleMemory');
+      const feedback = document.getElementById('singleFeedback');
+      feedback.className = 'feedback';
+      for (const value of demoValues) {
+        mem.textContent = value;
+        mem.classList.remove('pop');
+        void mem.offsetWidth;
+        mem.classList.add('pop');
+        feedback.textContent = `Do zmiennej a wpisano ${value}. Poprzednia wartość znika.`;
+        await new Promise(r => setTimeout(r, 700));
+      }
+      feedback.textContent = 'Wniosek: jedna zmienna zapamiętała tylko ostatnią liczbę, czyli 4. Do wielu danych użyjemy tablicy.';
+      feedback.className = 'feedback good';
+    }
+
+    function initArrayCells() {
+      const root = document.getElementById('arrayCells');
+      root.innerHTML = demoValues.map((v, i) => `
+        <div class="cell" onclick="selectArrayCell(${i})">
+          <div class="idx">a[${i}]</div>
+          <div class="val">${v}</div>
+        </div>
+      `).join('');
+    }
+
+    function selectArrayCell(i) {
+      document.querySelectorAll('#arrayCells .cell').forEach((c, idx) => c.classList.toggle('active', idx === i));
+      document.getElementById('arrayInfo').innerHTML = `Kliknięto <strong>a[${i}]</strong>. Indeks to <strong>${i}</strong>, wartość to <strong>${demoValues[i]}</strong>.`;
+    }
+
+    function checkDeclaration(ok, btn) {
+      const feedback = document.getElementById('declFeedback');
+      document.querySelectorAll('#declare .choice').forEach(b => b.style.borderColor = 'var(--line)');
+      btn.style.borderColor = ok ? 'rgba(34,197,94,.8)' : 'rgba(239,68,68,.8)';
+      feedback.className = ok ? 'feedback good' : 'feedback bad';
+      feedback.textContent = ok ? 'Dobrze! int tablica[10]; tworzy tablicę 10 liczb całkowitych.' : 'Nie tym razem. Poprawny zapis to: int tablica[10];';
+    }
+
+    function checkLastIndex() {
+      const value = Number(document.getElementById('lastIndexAnswer').value);
+      const feedback = document.getElementById('lastIndexFeedback');
+      if (value === 7) {
+        feedback.className = 'feedback good';
+        feedback.textContent = 'Dobrze! Tablica ma 8 elementów, więc ostatni indeks to 8 - 1 = 7.';
+      } else {
+        feedback.className = 'feedback bad';
+        feedback.textContent = 'Jeszcze raz. Dla int dane[8] indeksy to 0, 1, 2, 3, 4, 5, 6, 7.';
+      }
+    }
+
+    function toggleExplain(show) {
+      document.getElementById('explainBox').classList.toggle('show', show);
+    }
+
+    let simulatorLoaded = false;
+
+    function initSimulator() {
+      const inputs = document.getElementById('simInputs');
+      inputs.innerHTML = Array.from({length: 5}, (_, i) => `
+        <label class="sim-field">
+          <span>a[${i}]</span>
+          <input type="number" id="sim${i}" placeholder="liczba ${i + 1}" />
+        </label>
+      `).join('');
+
+      const cells = document.getElementById('simCells');
+      cells.innerHTML = Array.from({length: 5}, (_, i) => `
+        <div class="cell" id="simCell${i}">
+          <div class="idx">a[${i}]</div>
+          <div class="val" id="simVal${i}">?</div>
+        </div>
+      `).join('');
+    }
+
+    function readSimulatorValues() {
+      return Array.from({length: 5}, (_, i) => document.getElementById(`sim${i}`).value.trim());
+    }
+
+    function loadSimulator() {
+      const values = readSimulatorValues();
+      const missing = values.findIndex(v => v === '');
+
+      if (missing !== -1) {
+        document.getElementById('simOutput').textContent = `Brakuje liczby dla a[${missing}]. Uzupełnij wszystkie 5 pól, tak jak program prosi o 5 danych.`;
+        document.getElementById(`sim${missing}`).focus();
+        simulatorLoaded = false;
+        return;
+      }
+
+      values.forEach((value, i) => {
+        const cell = document.getElementById(`simVal${i}`);
+        cell.textContent = value;
+        const box = document.getElementById(`simCell${i}`);
+        box.classList.remove('pop');
+        void box.offsetWidth;
+        box.classList.add('pop');
+      });
+
+      simulatorLoaded = true;
+      document.getElementById('simOutput').textContent =
+        'Gotowe. Pętla for przeszła po indeksach 0, 1, 2, 3, 4 i zapisała wartości do tablicy a. Teraz kliknij „Wypisz dane”.';
+    }
+
+    function printSimulator() {
+      if (!simulatorLoaded) {
+        document.getElementById('simOutput').textContent = 'Najpierw kliknij „Wprowadź dane do tablicy”, aby zasymulować cin >> a[i].';
+        return;
+      }
+
+      const lines = [];
+      for (let i = 0; i < 5; i++) {
+        const value = document.getElementById(`simVal${i}`).textContent;
+        lines.push(`Dane[${i}] = ${value}`);
+      }
+      document.getElementById('simOutput').textContent = lines.join('\n');
+    }
+
+    function resetSimulator() {
+      for (let i = 0; i < 5; i++) {
+        document.getElementById(`sim${i}`).value = '';
+        document.getElementById(`simVal${i}`).textContent = '?';
+        document.getElementById(`simCell${i}`).classList.remove('pop');
+      }
+      simulatorLoaded = false;
+      document.getElementById('simOutput').textContent = 'Tutaj pojawi się wynik programu.';
+    }
+
+    const quizQuestions = [
+      {q:'Co najlepiej opisuje tablicę?', a:['Jedna zmienna, która zawsze ma wartość 0','Zbiór kilku elementów pod jedną nazwą','Instrukcja kończąca program','Tylko tekst na ekranie'], c:1},
+      {q:'Od jakiego indeksu zaczyna się tablica w C++?', a:['Od 0','Od 1','Od -1','Od N'], c:0},
+      {q:'Ile elementów ma tablica int a[5];?', a:['4','5','6','Zależy od komputera'], c:1},
+      {q:'Jaki jest ostatni indeks tablicy int dane[8];?', a:['8','7','9','0'], c:1},
+      {q:'Co oznacza a[i]?', a:['Całą tablicę','Element tablicy o indeksie i','Nazwę programu','Błąd kompilacji zawsze'], c:1},
+      {q:'Która deklaracja tworzy tablicę 10 liczb całkowitych?', a:['int tab[10];','tab int[10];','int tab;','array tab 10;'], c:0},
+      {q:'Co robi instrukcja cin >> a[i];?', a:['Wypisuje element tablicy','Wpisuje wartość do elementu tablicy','Usuwa tablicę','Kończy pętlę'], c:1},
+      {q:'Co robi cout << a[i];?', a:['Wypisuje element tablicy','Wpisuje dane z klawiatury','Tworzy nową tablicę','Zmienia indeks na 0'], c:0},
+      {q:'Dlaczego w pętli często piszemy i < N, a nie i <= N?', a:['Bo ostatni indeks to N - 1','Bo C++ nie pozwala używać N','Bo i zawsze jest tekstem','Nie ma różnicy'], c:0},
+      {q:'Jakie indeksy ma tablica int a[3];?', a:['1, 2, 3','0, 1, 2','0, 1, 2, 3','3, 2, 1'], c:1},
+      {q:'Co oznacza void przy funkcji?', a:['Funkcja nic nie zwraca','Funkcja zwraca liczbę całkowitą','Funkcja jest tablicą','Funkcja działa tylko raz'], c:0},
+      {q:'Która pętla poprawnie przejdzie po tablicy 5-elementowej?', a:['for(int i = 0; i < 5; i++)','for(int i = 1; i <= 5; i++)','for(int i = 0; i <= 5; i++)','for(int i = 5; i < 0; i++)'], c:0}
+    ];
+
+    let quizStarted = false;
+    let quizDone = false;
+    let timeLeft = 300;
+    let timerId = null;
+
+    function renderQuiz() {
+      const form = document.getElementById('quizForm');
+      form.innerHTML = quizQuestions.map((item, i) => `
+        <div class="question">
+          <h3>${i + 1}. ${item.q}</h3>
+          <div class="answers">
+            ${item.a.map((ans, j) => `
+              <label class="answer">
+                <input type="radio" name="q${i}" value="${j}" disabled />
+                <span>${ans}</span>
+              </label>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function startQuiz() {
+      if (quizStarted) return;
+      quizStarted = true;
+      quizDone = false;
+      timeLeft = 300;
+      document.querySelectorAll('#quizForm input').forEach(i => i.disabled = false);
+      document.getElementById('startQuizBtn').disabled = true;
+      document.getElementById('finishQuizBtn').classList.remove('hidden');
+      document.getElementById('retryQuizBtn').classList.add('hidden');
+      document.getElementById('results').style.display = 'none';
+      timerId = setInterval(() => {
+        timeLeft--;
+        updateTimer();
+        if (timeLeft <= 0) finishQuiz();
+      }, 1000);
+      updateTimer();
+    }
+
+    function updateTimer() {
+      const min = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+      const sec = String(timeLeft % 60).padStart(2, '0');
+      document.getElementById('timer').textContent = `${min}:${sec}`;
+    }
+
+    function finishQuiz() {
+      if (!quizStarted || quizDone) return;
+      quizDone = true;
+      clearInterval(timerId);
+      document.querySelectorAll('#quizForm input').forEach(i => i.disabled = true);
+      document.getElementById('finishQuizBtn').classList.add('hidden');
+      document.getElementById('retryQuizBtn').classList.remove('hidden');
+
+      let score = 0;
+      let review = '';
+      quizQuestions.forEach((item, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        const selectedIndex = selected ? Number(selected.value) : -1;
+        const ok = selectedIndex === item.c;
+        if (ok) score++;
+        review += `
+          <div class="review-item ${ok ? 'correct' : 'wrong'}">
+            <strong>${i + 1}. ${item.q}</strong><br>
+            Twoja odpowiedź: ${selectedIndex >= 0 ? item.a[selectedIndex] : 'brak odpowiedzi'}<br>
+            Poprawna odpowiedź: <strong>${item.a[item.c]}</strong>
+          </div>`;
+      });
+
+      const percent = Math.round((score / quizQuestions.length) * 100);
+      const grade = getGrade(percent);
+      const results = document.getElementById('results');
+      results.style.display = 'block';
+      results.innerHTML = `
+        <div class="mini-card">
+          <div class="result-big">${score}/${quizQuestions.length} — ${percent}%</div>
+          <h3>Proponowana ocena: ${grade}</h3>
+          <p>${getMessage(percent)}</p>
+        </div>
+        <h3>Omówienie odpowiedzi</h3>
+        ${review}
+      `;
+      results.scrollIntoView({behavior: 'smooth', block: 'start'});
+    }
+
+    function getGrade(percent) {
+      if (percent < 40) return 'do poprawy';
+      if (percent < 55) return '3';
+      if (percent < 75) return '4';
+      if (percent < 90) return '5';
+      return '6';
+    }
+
+    function getMessage(percent) {
+      if (percent < 40) return 'Warto powtórzyć: indeksy od zera, deklarację tablicy i pętlę for.';
+      if (percent < 55) return 'Podstawy są, ale trzeba jeszcze poćwiczyć.';
+      if (percent < 75) return 'Dobra robota. Rozumiesz większość tematu.';
+      if (percent < 90) return 'Bardzo dobrze. Tablice są już prawie opanowane.';
+      return 'Świetnie! Możesz tłumaczyć tablice innym.';
+    }
+
+    function resetQuiz() {
+      clearInterval(timerId);
+      quizStarted = false;
+      quizDone = false;
+      timeLeft = 300;
+      updateTimer();
+      document.getElementById('startQuizBtn').disabled = false;
+      document.getElementById('finishQuizBtn').classList.add('hidden');
+      document.getElementById('retryQuizBtn').classList.add('hidden');
+      document.getElementById('results').style.display = 'none';
+      renderQuiz();
+    }
+
+    initNumbers();
+    initArrayCells();
+    initSimulator();
+    renderQuiz();
+    updateTimer();
+  </script>
+</body>
+</html>

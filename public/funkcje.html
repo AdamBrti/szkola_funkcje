@@ -1,0 +1,1370 @@
+﻿<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Funkcje w C++ — Programowanie SP8</title>
+  <style>
+    :root {
+      --bg: #0a0f1f;
+      --bg-soft: #11182d;
+      --card: rgba(18, 26, 46, 0.92);
+      --border: rgba(80, 225, 255, 0.22);
+      --text: #edf4ff;
+      --muted: #98a9c7;
+      --accent: #4de2ff;
+      --accent-2: #7dffb3;
+      --danger: #ff7aa2;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(77, 226, 255, 0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(125, 255, 179, 0.1), transparent 24%),
+        linear-gradient(180deg, #060b16 0%, #0a0f1f 55%, #0d1324 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .wrap {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0 56px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 28px 18px 18px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(77, 226, 255, 0.08);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.92rem;
+      letter-spacing: 0.04em;
+      box-shadow: 0 0 20px rgba(77, 226, 255, 0.1);
+    }
+
+    h1 {
+      margin: 18px auto 14px;
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1.05;
+      max-width: 850px;
+    }
+
+    .hero p {
+      margin: 0 auto;
+      max-width: 720px;
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      line-height: 1.7;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+      margin-top: 30px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .panel {
+      padding: 28px;
+    }
+
+    .panel h2,
+    .codes h2 {
+      margin: 0 0 10px;
+      font-size: clamp(1.4rem, 2.2vw, 2rem);
+    }
+
+    .subtitle {
+      margin: 0 0 22px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .input-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      color: #d8e7ff;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 16px;
+      border: 1px solid rgba(77, 226, 255, 0.24);
+      background: rgba(5, 11, 25, 0.9);
+      color: var(--text);
+      font-size: 1.08rem;
+      outline: none;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    }
+
+    input[type="number"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(77, 226, 255, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      border: none;
+      border-radius: 16px;
+      padding: 15px 14px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #06111d;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+      box-shadow: 0 10px 24px rgba(77, 226, 255, 0.18);
+    }
+
+    button:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 16px 34px rgba(77, 226, 255, 0.25);
+      filter: brightness(1.05);
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .side-card {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .mini-title {
+      font-size: 1.2rem;
+      margin: 0;
+    }
+
+    .tip {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .result-box {
+      margin-top: 8px;
+      background: rgba(5, 11, 25, 0.85);
+      border: 1px solid rgba(77, 226, 255, 0.18);
+      border-radius: 20px;
+      padding: 22px;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .result-box::after {
+      content: "";
+      position: absolute;
+      inset: auto -60px -60px auto;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, rgba(77, 226, 255, 0.16), transparent 70%);
+      pointer-events: none;
+    }
+
+    .result-tag {
+      display: inline-block;
+      align-self: flex-start;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(125, 255, 179, 0.1);
+      color: var(--accent-2);
+      border: 1px solid rgba(125, 255, 179, 0.2);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .result-text {
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    .result-number {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      color: var(--accent);
+      text-shadow: 0 0 18px rgba(77, 226, 255, 0.18);
+    }
+
+    .power-bar-wrap {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 999px;
+      height: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(77, 226, 255, 0.12);
+    }
+
+    .power-bar {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 20px rgba(77, 226, 255, 0.24);
+      transition: width 0.45s ease;
+    }
+
+    .hash-bar {
+      font-family: Consolas, Monaco, monospace;
+      color: var(--accent-2);
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      word-break: break-word;
+      letter-spacing: 0.08em;
+    }
+
+    .result-animate {
+      animation: popIn 0.35s ease;
+    }
+
+    @keyframes popIn {
+      from {
+        opacity: 0;
+        transform: scale(0.96) translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .codes {
+      margin-top: 24px;
+      padding: 28px;
+    }
+
+    .section-note {
+      color: var(--muted);
+      line-height: 1.7;
+      margin: 0 0 24px;
+    }
+
+    .code-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .code-card {
+      background: rgba(6, 10, 20, 0.95);
+      border: 1px solid rgba(77, 226, 255, 0.16);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+
+    .code-head {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(77, 226, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .code-head strong {
+      font-size: 1rem;
+    }
+
+    .code-head span {
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    pre {
+      margin: 0;
+      padding: 18px;
+      overflow-x: auto;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: #e9f3ff;
+    }
+
+    code {
+      font-family: Consolas, Monaco, "Courier New", monospace;
+    }
+
+    .kw { color: #66e0ff; }
+    .type { color: #7dffb3; }
+    .fn { color: #ffd76a; }
+    .num { color: #ff9fce; }
+    .cm { color: #7f93b3; }
+
+    .footer-note {
+      margin-top: 20px;
+      padding: 16px 18px;
+      border-left: 4px solid var(--accent);
+      background: rgba(77, 226, 255, 0.05);
+      border-radius: 14px;
+      color: #dce9ff;
+      line-height: 1.7;
+    }
+
+    .tasks-intro {
+      margin: 0 0 22px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .task-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .task-item {
+      background: rgba(6, 10, 20, 0.88);
+      border: 1px solid rgba(77, 226, 255, 0.14);
+      border-radius: 18px;
+      padding: 20px 22px;
+    }
+
+    .task-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 14px;
+      margin-bottom: 12px;
+    }
+
+    .task-num {
+      font-weight: 900;
+      font-size: 1.05rem;
+      color: var(--accent);
+      min-width: 2.2em;
+    }
+
+    .task-title {
+      margin: 0;
+      font-size: 1.12rem;
+      flex: 1 1 200px;
+    }
+
+    .task-meter {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 3px;
+      flex-shrink: 0;
+      height: 26px;
+      padding: 3px 6px 4px;
+      border-radius: 10px;
+      background: rgba(5, 11, 25, 0.55);
+      border: 1px solid rgba(77, 226, 255, 0.14);
+    }
+
+    .task-meter__bar {
+      width: 8px;
+      height: 18px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .task-meter--easy .task-meter__bar:nth-child(-n + 2) {
+      background: linear-gradient(180deg, #b8ffd9, var(--accent-2));
+      border-color: rgba(125, 255, 179, 0.45);
+      box-shadow: 0 0 10px rgba(125, 255, 179, 0.25);
+    }
+
+    .task-meter--mid .task-meter__bar:nth-child(-n + 3) {
+      background: linear-gradient(180deg, #fff0c2, #ffd76a);
+      border-color: rgba(255, 215, 106, 0.55);
+      box-shadow: 0 0 10px rgba(255, 215, 106, 0.2);
+    }
+
+    .task-meter--hard .task-meter__bar:nth-child(-n + 5) {
+      background: linear-gradient(180deg, #ffc8de, var(--danger));
+      border-color: rgba(255, 122, 162, 0.55);
+      box-shadow: 0 0 10px rgba(255, 122, 162, 0.28);
+    }
+
+    .task-meter-legend {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px 16px;
+      margin-bottom: 18px;
+      padding: 12px 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(77, 226, 255, 0.14);
+      background: rgba(6, 10, 20, 0.55);
+    }
+
+    .task-meter-legend__row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      flex: 1 1 auto;
+      justify-content: center;
+      min-width: min(100%, 220px);
+    }
+
+    .task-meter-legend__arrow {
+      color: var(--muted);
+      font-size: 1.15rem;
+      line-height: 1;
+      user-select: none;
+    }
+
+    .task-meter-legend__cap {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .task-meter-legend__cap--lo {
+      color: var(--accent-2);
+    }
+
+    .task-meter-legend__cap--hi {
+      color: var(--danger);
+    }
+
+    .task-body {
+      margin: 0;
+      color: #dce9ff;
+      line-height: 1.75;
+    }
+
+    .task-body ul {
+      margin: 10px 0 0;
+      padding-left: 1.25em;
+    }
+
+    .task-body li {
+      margin-bottom: 6px;
+    }
+
+    .task-hint {
+      margin: 14px 0 0;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(77, 226, 255, 0.06);
+      border: 1px solid rgba(77, 226, 255, 0.12);
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+
+    .task-nudge {
+      margin: 10px 0 0;
+      padding: 11px 14px 12px;
+      border-radius: 12px;
+      border-left: 3px solid var(--accent-2);
+      background: rgba(125, 255, 179, 0.06);
+      color: #c8dff0;
+      font-size: 0.92rem;
+      line-height: 1.68;
+    }
+
+    .lesson-extra {
+      margin-top: 24px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: rgba(18, 26, 46, 0.75);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .lesson-extra[open] {
+      background: var(--card);
+    }
+
+    .lesson-extra__summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      user-select: none;
+      transition: background 0.2s ease;
+    }
+
+    .lesson-extra__summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .lesson-extra__summary:hover {
+      background: rgba(77, 226, 255, 0.06);
+    }
+
+    .lesson-extra__summary-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .lesson-extra__summary-text strong {
+      display: block;
+      font-size: 1.08rem;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .lesson-extra__summary-text span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.55;
+      font-weight: 500;
+    }
+
+    .lesson-extra__chev {
+      flex-shrink: 0;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      border: 1px solid rgba(77, 226, 255, 0.28);
+      background: rgba(5, 11, 25, 0.65);
+      display: grid;
+      place-items: center;
+      color: var(--accent);
+      font-size: 1.1rem;
+      line-height: 1;
+      transition: transform 0.25s ease, border-color 0.2s ease;
+    }
+
+    .lesson-extra[open] .lesson-extra__chev {
+      transform: rotate(180deg);
+    }
+
+    .lesson-extra__body {
+      padding: 8px 12px 24px;
+      border-top: 1px solid rgba(77, 226, 255, 0.12);
+    }
+
+    @media (max-width: 920px) {
+      .grid,
+      .code-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .buttons {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .wrap {
+        width: min(100% - 18px, 1100px);
+        padding-top: 18px;
+      }
+
+      .panel,
+      .side-card,
+      .codes {
+        padding: 20px;
+      }
+
+      h1 {
+        line-height: 1.12;
+      }
+
+      pre {
+        font-size: 0.93rem;
+      }
+    }
+  
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(80, 225, 255, 0.18);
+      background: rgba(5, 11, 25, 0.86);
+      backdrop-filter: blur(16px);
+    }
+
+    .site-nav__inner {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .site-nav__brand {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .site-nav__links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .site-nav__link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 800;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .site-nav__link:hover,
+    .site-nav__link--active {
+      color: var(--accent);
+      border-color: rgba(77, 226, 255, 0.26);
+      background: rgba(77, 226, 255, 0.08);
+    }
+
+    @media (max-width: 700px) {
+      .site-nav__inner {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 12px 0;
+      }
+
+      .site-nav__links {
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Tematy programowania">
+    <div class="site-nav__inner">
+      <a class="site-nav__brand" href="index.html">Programowanie SP8</a>
+      <div class="site-nav__links">
+        <a class="site-nav__link" href="index.html">Start</a>
+        <a class="site-nav__link site-nav__link--active" href="funkcje.html">Funkcje</a>
+        <a class="site-nav__link" href="tablice.html">Tablice</a>
+      </div>
+    </div>
+  </nav>
+  <div class="wrap">
+    <section class="hero">
+      <div class="badge">Funkcje w C++ — panel interaktywny</div>
+      <h1>Panel mocy postaci</h1>
+      <p>
+        Wpisz liczbę i uruchamiaj funkcje przyciskami — tak jak wywołuje się je w programie: podajesz dane, funkcja coś robi, widzisz wynik.
+        Niżej masz ten sam pomysł zapisany w <strong>C++</strong>, żebyś mógł go przenieść do Dev-C++.
+        <a href="#zadania-cpp" style="color:var(--accent);font-weight:700;">Zadania do Dev-C++</a> (poziom klasa 8) masz w sekcji niżej na stronie.
+        Opcjonalna <a href="#lesson-extra-panel" style="color:var(--accent-2);font-weight:700;">mini-gra z XP</a> jest zwinięta w osobnym panelu — kliknij, żeby go rozwinąć.
+      </p>
+    </section>
+
+    <section class="grid">
+      <article class="card panel">
+        <h2>Panel: wywoływanie funkcji</h2>
+        <p class="subtitle">
+          Każdy przycisk to wywołanie innej funkcji — tak jak w kodzie wywołujesz funkcję po nazwie i przekazujesz argument (tutaj: liczbę z pola).
+        </p>
+
+        <div class="input-group">
+          <label for="powerInput">Podaj siłę postaci</label>
+          <input id="powerInput" type="number" value="5" min="0" max="100" placeholder="Np. 5" />
+        </div>
+
+        <div class="buttons">
+          <button onclick="policzKwadrat()">Policz kwadrat</button>
+          <button onclick="podwojMoc()">Podwój moc</button>
+          <button onclick="pokazPasekMocy()">Pokaż pasek mocy</button>
+        </div>
+
+        <div class="result-box" id="resultBox">
+          <div class="result-tag">Gotowe do działania</div>
+          <div class="result-text">Wpisz liczbę i kliknij przycisk.</div>
+          <div class="result-number">5</div>
+          <div class="power-bar-wrap">
+            <div class="power-bar" id="powerBar" style="width: 5%;"></div>
+          </div>
+          <div class="hash-bar" id="hashBar">#####</div>
+        </div>
+      </article>
+
+      <aside class="card side-card">
+        <div>
+          <h3 class="mini-title">Jak to działa?</h3>
+          <p class="tip">
+            Funkcja to fragment programu, który wykonuje konkretne zadanie. Może coś policzyć,
+            zmienić wartość albo coś wyświetlić.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="mini-title">Przykłady z liczbami</h3>
+          <p class="tip">
+            <strong>kwadrat(5)</strong> daje <strong>25</strong><br>
+            <strong>podwoj(5)</strong> daje <strong>10</strong><br>
+            <strong>pasekMocy(5)</strong> może pokazać <strong>#####</strong>
+          </p>
+        </div>
+
+        <div>
+          <h3 class="mini-title">Wskazówka</h3>
+          <p class="tip">
+            Zwróć uwagę, że każda funkcja ma nazwę i parametr. Parametr to liczba, którą podajesz do środka.
+          </p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="card codes">
+      <h2>Zapis funkcji w C++</h2>
+      <p class="section-note">
+        Poniżej są trzy osobne funkcje w C++. Każda robi coś innego, ale każda przyjmuje liczbę <strong>x</strong>.
+      </p>
+
+      <div class="code-grid">
+        <article class="code-card">
+          <div class="code-head">
+            <strong>Funkcja 1</strong>
+            <span>int kwadrat(int x)</span>
+          </div>
+          <pre><code><span class="type">int</span> <span class="fn">kwadrat</span>(<span class="type">int</span> x) {
+  <span class="kw">return</span> x * x;
+}</code></pre>
+        </article>
+
+        <article class="code-card">
+          <div class="code-head">
+            <strong>Funkcja 2</strong>
+            <span>int podwoj(int x)</span>
+          </div>
+          <pre><code><span class="type">int</span> <span class="fn">podwoj</span>(<span class="type">int</span> x) {
+  <span class="kw">return</span> x * <span class="num">2</span>;
+}</code></pre>
+        </article>
+
+        <article class="code-card">
+          <div class="code-head">
+            <strong>Funkcja 3</strong>
+            <span>void pasekMocy(int x)</span>
+          </div>
+          <pre><code><span class="type">void</span> <span class="fn">pasekMocy</span>(<span class="type">int</span> x) {
+  <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">0</span>; i &lt; x; i++) {
+    cout &lt;&lt; <span class="cm">"#"</span>;
+  }
+}</code></pre>
+        </article>
+      </div>
+
+      <div class="footer-note">
+        <strong>Najważniejsze:</strong> w swoim programie w C++ zapisujesz funkcje tak jak niżej i wywołujesz je z <code>main</code>
+        (albo z innej funkcji) — zamiast przycisku masz po prostu nazwę funkcji i nawias z argumentem.
+      </div>
+    </section>
+
+    <section class="card codes" style="margin-top:24px;">
+      <h2>Ciekawsze funkcje (dla zabawy i nauki)</h2>
+      <p class="section-note">
+        Te funkcje pokazują, że funkcje mogą robić coś więcej niż tylko proste obliczenia. Widzisz,
+        że funkcja może losować, sprawdzać warunki, zmieniać kolory panelu i sterować prostą mini grą.
+      </p>
+
+      <div class="buttons" style="margin-bottom:20px;">
+        <button onclick="losujMoc()">Losuj moc</button>
+        <button onclick="czyPierwsza()">Czy liczba jest pierwsza?</button>
+        <button onclick="zmienKolor()">Zmień kolor tła</button>
+      </div>
+
+      <div class="result-box" id="funResultBox">
+        <div class="result-tag">Tryb zabawy</div>
+        <div class="result-text">Kliknij przycisk, aby zobaczyć ciekawsze działanie funkcji.</div>
+        <div class="result-number">?</div>
+        <div class="hash-bar">✨✨✨</div>
+      </div>
+
+      <div class="code-grid" style="margin-top:20px;">
+        <article class="code-card">
+          <div class="code-head">
+            <strong>Losowa moc</strong>
+            <span>int losujMoc()</span>
+          </div>
+          <pre><code><span class="type">int</span> <span class="fn">losujMoc</span>() {
+  <span class="kw">return</span> rand() % <span class="num">100</span> + <span class="num">1</span>;
+}</code></pre>
+        </article>
+
+        <article class="code-card">
+          <div class="code-head">
+            <strong>Liczba pierwsza</strong>
+            <span>bool czyPierwsza(int x)</span>
+          </div>
+          <pre><code><span class="type">bool</span> <span class="fn">czyPierwsza</span>(<span class="type">int</span> x) {
+  <span class="kw">if</span> (x &lt; <span class="num">2</span>) <span class="kw">return</span> false;
+  <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">2</span>; i &lt; x; i++) {
+    <span class="kw">if</span> (x % i == <span class="num">0</span>) <span class="kw">return</span> false;
+  }
+  <span class="kw">return</span> true;
+}</code></pre>
+        </article>
+
+        <article class="code-card">
+          <div class="code-head">
+            <strong>Zmiana koloru</strong>
+            <span>void zmienKolor()</span>
+          </div>
+          <pre><code><span class="type">void</span> <span class="fn">zmienKolor</span>() {
+  <span class="cm">// funkcja zmienia kolory (motyw) panelu</span>
+}</code></pre>
+        </article>
+      </div>
+
+      <div class="footer-note" style="margin-top:18px;">
+        <strong>Sprawdź sam:</strong> która z tych funkcji <strong>zwraca</strong> wartość do dalszego kodu, a która raczej <strong>coś robi</strong> (np. wypisuje) bez zwracania liczby?
+      </div>
+    </section>
+
+    <details class="lesson-extra" id="lesson-extra-panel">
+      <summary class="lesson-extra__summary">
+        <div class="lesson-extra__summary-text">
+          <strong>Mini-gra z XP (opcjonalnie)</strong>
+          <span>Centrum bohatera i proste funkcje od poziomu — domyślnie zwinięte. Zadania do Dev-C++ są zawsze widoczne pod tym panelem.</span>
+        </div>
+        <span class="lesson-extra__chev" aria-hidden="true">▼</span>
+      </summary>
+      <div class="lesson-extra__body">
+    <section class="card codes" style="margin-top:0;" id="mini-gra">
+      <h2>Mini gra i system poziomów</h2>
+      <p class="section-note">
+        Te funkcje współpracują ze sobą: jedna dodaje doświadczenie, druga zwiększa poziom, a trzecia uruchamia prosty atak.
+      </p>
+
+      <div class="grid" style="grid-template-columns: 1fr 1fr; margin-top:0; gap:18px;">
+        <article class="code-card" style="padding:22px; background: rgba(6, 10, 20, 0.95); border-radius:20px;">
+          <h3 class="mini-title" style="margin-top:0;">Centrum sterowania bohaterem</h3>
+          <p class="tip">Klikaj przyciski i obserwuj, jak funkcje zmieniają stan bohatera.</p>
+
+          <div class="buttons" style="grid-template-columns: repeat(2, 1fr); margin-top:16px;">
+            <button onclick="dodajXP()">+10 XP</button>
+            <button onclick="atakSpecjalny()">Atak specjalny</button>
+            <button onclick="resetBohatera()">Reset bohatera</button>
+            <button onclick="pokazStatusBohatera()">Pokaż status</button>
+          </div>
+
+          <div class="result-box" id="heroBox" style="margin-top:18px; min-height:260px;">
+            <div class="result-tag">Bohater</div>
+            <div class="result-text">Poziom: <strong id="heroLevelText">1</strong></div>
+            <div class="result-text">XP: <strong id="heroXpText">0 / 30</strong></div>
+            <div class="power-bar-wrap">
+              <div class="power-bar" id="xpBar" style="width:0%;"></div>
+            </div>
+            <div class="hash-bar" id="heroMessage">Start gry: bohater czeka na ruch.</div>
+          </div>
+        </article>
+
+        <div class="code-grid" style="grid-template-columns: 1fr; margin-top:0;">
+          <article class="code-card">
+            <div class="code-head">
+              <strong>Dodawanie doświadczenia</strong>
+              <span>void dodajXP()</span>
+            </div>
+            <pre><code><span class="type">void</span> <span class="fn">dodajXP</span>() {
+  xp += <span class="num">10</span>;
+}</code></pre>
+          </article>
+
+          <article class="code-card">
+            <div class="code-head">
+              <strong>Sprawdzenie poziomu</strong>
+              <span>void sprawdzLevelUp()</span>
+            </div>
+            <pre><code><span class="type">void</span> <span class="fn">sprawdzLevelUp</span>() {
+  <span class="kw">if</span> (xp &gt;= <span class="num">30</span>) {
+    level++;
+    xp = <span class="num">0</span>;
+  }
+}</code></pre>
+          </article>
+
+          <article class="code-card">
+            <div class="code-head">
+              <strong>Atak specjalny</strong>
+              <span>int atakSpecjalny(int level)</span>
+            </div>
+            <pre><code><span class="type">int</span> <span class="fn">atakSpecjalny</span>(<span class="type">int</span> level) {
+  <span class="kw">return</span> level * <span class="num">15</span>;
+}</code></pre>
+          </article>
+        </div>
+      </div>
+    </section>
+      </div>
+    </details>
+
+    <section class="card codes" style="margin-top:24px;" id="zadania-cpp">
+      <h2>Zadania w Dev-C++ (poziom klasa 8)</h2>
+      <p class="tasks-intro">
+        Poniżej pięć zadań w <strong>jednym projekcie konsolowym</strong> w Dev-C++.
+        Każde zadanie to osobna <strong>funkcja</strong>, którą wywołujesz z <code>main</code> — tak jak przy przyciskach powyżej:
+        najpierw myślisz „co ma robić funkcja”, potem ją piszesz i testujesz liczbami z treści.
+        <strong>Zacznij od szkieletu</strong> (sekcja „Szablon pliku”) — przepisz go do edytora i dopisuj nagłówki oraz kod według poleceń pod numerami.
+      </p>
+
+      <div class="footer-note" style="margin-bottom:22px;">
+        <strong>Start w Dev-C++:</strong> Plik → Nowy → Projekt → <em>Console Application</em> → C++.
+        Na górze pliku dodaj <code>#include &lt;iostream&gt;</code>. Możesz dopisać <code>using namespace std;</code>
+        albo w ogóle z niego zrezygnować i pisać <code>std::cout</code> zamiast samego <code>cout</code> — wybierz jeden styl i trzymaj się go w całym pliku.
+        Ważne, żeby program się kompilował i dało się go uruchomić (w Dev-C++ często <strong>F9</strong>: skompiluj i uruchom).
+      </div>
+
+      <h3 class="mini-title" style="margin:20px 0 10px;">Szablon pliku do przepisania</h3>
+      <p class="section-note" style="margin-top:0; margin-bottom:14px;">
+        Poniżej gotowy <strong>szkielet</strong>: <code>#include</code>, <code>using namespace std;</code> (albo zostaw i używaj <code>std::</code>),
+        pięć pustych miejsc na <strong>nagłówki funkcji</strong> (sam dopisujesz typ, nazwę i argumenty — tak jak w treści zadań) oraz <code>main</code> z komentarzami, gdzie dodać wywołania.
+        Między komentarzem a pierwszą klamrą <code>{</code> wpisz <strong>jedną linię</strong> z nagłówkiem funkcji, w środku klamer — ciało funkcji.
+      </p>
+
+      <article class="code-card" style="margin-bottom:24px;">
+        <div class="code-head">
+          <strong>Przykład: main.cpp</strong>
+          <span>przepisz do Dev-C++ i uzupełnij</span>
+        </div>
+        <pre><code>#include &lt;iostream&gt;
+using namespace std;   <span class="cm">// opcjonalnie — możesz usunąć i wtedy pisz std::cout / std::cin</span>
+
+<span class="cm">// ----- Zadanie 1: tu JEDNA LINIA — nagłówek funkcji (typ, nazwa, argumenty wg polecenia) -----</span>
+
+
+{
+
+}
+
+<span class="cm">// ----- Zadanie 2: tu JEDNA LINIA — nagłówek funkcji -----</span>
+
+
+{
+
+}
+
+<span class="cm">// ----- Zadanie 3: tu JEDNA LINIA — nagłówek funkcji -----</span>
+
+
+{
+
+}
+
+<span class="cm">// ----- Zadanie 4: tu JEDNA LINIA — nagłówek funkcji -----</span>
+
+
+{
+
+}
+
+<span class="cm">// ----- Zadanie 5: tu JEDNA LINIA — nagłówek funkcji -----</span>
+
+
+{
+
+}
+
+int main()
+{
+    <span class="cm">// Zadanie 1: wczytaj liczbę, wywołaj funkcję, wypisz wynik</span>
+
+
+    <span class="cm">// Zadanie 2: dwa wywołania funkcji pod rząd</span>
+
+
+    <span class="cm">// Zadanie 3: wczytaj dwie liczby, wywołaj funkcję, wypisz wynik</span>
+
+
+    <span class="cm">// Zadanie 4: wczytaj liczbę, na podstawie funkcji wypisz TAK lub NIE</span>
+
+
+    <span class="cm">// Zadanie 5: wczytaj n, wywołaj funkcję, wypisz sumę cyfr</span>
+
+    return 0;
+}</code></pre>
+      </article>
+
+      <div class="footer-note" style="margin-bottom:22px;">
+        <strong>Jak z tego korzystać:</strong> nie musisz zostawiać pustych linii — mogą być tylko po to, żebyś wyraźnie dopisał nagłówek nad <code>{</code>.
+        Kolejność funkcji w pliku może być inna niż 1–5. Każda funkcja ma być zdefiniowana <strong>przed</strong> <code>main</code>
+        albo mieć na górze pliku <strong>prototyp</strong> (jeśli już znasz deklaracje i definicje rozdzielone).
+      </div>
+
+      <div class="task-meter-legend" aria-label="Skala trudności: od mniejszej liczby podświetlonych słupków do większej">
+        <span class="task-meter-legend__cap task-meter-legend__cap--lo">mniej</span>
+        <div class="task-meter-legend__row">
+          <span class="task-meter task-meter--easy" aria-hidden="true"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+          <span class="task-meter-legend__arrow" aria-hidden="true">→</span>
+          <span class="task-meter task-meter--mid" aria-hidden="true"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+          <span class="task-meter-legend__arrow" aria-hidden="true">→</span>
+          <span class="task-meter task-meter--hard" aria-hidden="true"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+        </div>
+        <span class="task-meter-legend__cap task-meter-legend__cap--hi">więcej</span>
+      </div>
+
+      <div class="task-stack">
+        <article class="task-item">
+          <div class="task-top">
+            <span class="task-num">1</span>
+            <h3 class="task-title">Funkcja „plus dziesięć”</h3>
+            <span class="task-meter task-meter--easy" role="img" aria-label="Trudność: niska"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+          </div>
+          <p class="task-body">
+            Napisz funkcję <code>int plusDziesiec(int x)</code>, która <strong>zwraca</strong> wartość o 10 większą niż <code>x</code>.
+            W <code>main</code> wczytaj jedną liczbę całkowitą z klawiatury, wywołaj funkcję i wypisz wynik.
+          </p>
+          <p class="task-hint">
+            <strong>Test:</strong> wpisz <code>4</code> — na wyjściu chcesz zobaczyć <code>14</code>. Funkcja ma tylko <code>return</code> — bez <code>cout</code> w środku.
+          </p>
+          <p class="task-nudge">
+            <strong>Podpowiedź na start:</strong> zrób tak: najpierw w <code>main</code> wczytaj liczbę do zmiennej, dopiero potem wywołaj funkcję z tą zmienną i wypisz wynik. Samą funkcję zostaw „czystą” — tylko liczy i <code>return</code>.
+            Na początek przetestuj na małych liczbach (np. 0, 4, 11). Jak wszystko działa, dopiero wtedy wpisuj większe — tak łatwiej złapać błąd.
+          </p>
+        </article>
+
+        <article class="task-item">
+          <div class="task-top">
+            <span class="task-num">2</span>
+            <h3 class="task-title">Pozdrowienie z funkcji</h3>
+            <span class="task-meter task-meter--easy" role="img" aria-label="Trudność: niska"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+          </div>
+          <p class="task-body">
+            Napisz funkcję <code>void pozdrow()</code>, która <strong>nic nie zwraca</strong>, ale wypisuje w jednej linii dokładnie tekst:
+            <code>Czesc, jestem w C++!</code> (bez polskich znaków, tak jak w cytacie).
+            W <code>main</code> wywołaj tę funkcję dwa razy pod rząd — w oknie konsoli powinny być dwie identyczne linie.
+          </p>
+          <p class="task-hint">
+            <strong>Przypomnienie:</strong> <code>void</code> oznacza „bez zwracania wartości”; używasz <code>cout</code> w środku funkcji.
+          </p>
+          <p class="task-nudge">
+            <strong>Podpowiedź na start:</strong> wypisz tekst jednym <code>cout</code> w cudzysłowie i porównaj literka w literkę z poleceniem (przecinki, spacje, wykrzyknik).
+            Jak masz dwa wywołania pod rząd, między nimi <strong>nie dokładaj</strong> w <code>main</code> dodatkowej „pustej linii” (<code>endl</code> albo drugi enter wypisania) — wtedy zamiast dwóch takich samych linii zobaczysz przerwę pośrodku.
+          </p>
+        </article>
+
+        <article class="task-item">
+          <div class="task-top">
+            <span class="task-num">3</span>
+            <h3 class="task-title">Która liczba jest większa?</h3>
+            <span class="task-meter task-meter--mid" role="img" aria-label="Trudność: średnia"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+          </div>
+          <p class="task-body">
+            Napisz funkcję <code>int wieksza(int a, int b)</code>, która <strong>zwraca</strong> większą z dwóch liczb
+            (gdy są równe, zwróć którąkolwiek). W <code>main</code> wczytaj dwie liczby i wypisz wynik wywołania funkcji.
+          </p>
+          <p class="task-hint">
+            <strong>Test:</strong> wejście <code>7</code> i <code>15</code> → wynik <code>15</code>. Wejście <code>20</code> i <code>20</code> → <code>20</code>.
+            Wskazówka: wystarczy <code>if</code> / <code>else</code> albo operator warunkowy — oba sposoby są OK.
+          </p>
+          <p class="task-nudge">
+            <strong>Podpowiedź na start:</strong> zanim odpalisz program, na kartce zapisz przykład: „pierwsza liczba większa”, „druga większa”, „dwie takie same” — i obok jaki wynik ma być. Potem sprawdź, czy program robi to samo.
+            Uważaj, żeby najpierw wczytywać tę liczbę, którą nazwałeś <code>a</code>, a potem <code>b</code> — jak zamienisz kolejność w <code>cin</code>, program dalej się uruchomi, ale wynik może być odwrotny niż myślisz.
+            Możesz wpisać obie liczby w jednej linii z spacją pośrodku — nie musisz klikać Entera dwa razy.
+          </p>
+        </article>
+
+        <article class="task-item">
+          <div class="task-top">
+            <span class="task-num">4</span>
+            <h3 class="task-title">Czy liczba jest parzysta?</h3>
+            <span class="task-meter task-meter--mid" role="img" aria-label="Trudność: średnia"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+          </div>
+          <p class="task-body">
+            Napisz funkcję <code>bool czyParzysta(int n)</code>, która zwraca <code>true</code>, gdy <code>n</code> jest parzyste,
+            i <code>false</code> w przeciwnym razie. W <code>main</code> wczytaj jedną liczbę i wypisz słowo <code>TAK</code> albo <code>NIE</code>
+            (wielkimi literami), w zależności od wyniku funkcji.
+          </p>
+          <p class="task-hint">
+            <strong>Test:</strong> <code>8</code> → <code>TAK</code>. <code>7</code> → <code>NIE</code>. <code>0</code> → <code>TAK</code>.
+            Operator reszty z dzielenia: <code>%</code>.
+          </p>
+          <p class="task-nudge">
+            <strong>Podpowiedź na start:</strong> funkcja tylko mówi w środku programu „tak” albo „nie” (<code>true</code> / <code>false</code>). Ciebie interesuje, co <strong>wypisać człowiekowi</strong> — więc w <code>main</code> zrób <code>if</code>: jeśli wynik funkcji jest prawdą, wypisz <code>TAK</code>, w przeciwnym razie <code>NIE</code>.
+            Jak spróbujesz od razu <code>cout</code> z samej funkcji, często zobaczysz <code>0</code> i <code>1</code> zamiast słów — dlatego w <code>main</code> robisz <code>if</code> i wypisujesz <code>TAK</code> albo <code>NIE</code>.
+            Koniecznie sprawdź też liczbę <code>0</code> — zero jest parzyste, więc powinno wyjść <code>TAK</code>.
+          </p>
+        </article>
+
+        <article class="task-item">
+          <div class="task-top">
+            <span class="task-num">5</span>
+            <h3 class="task-title">Suma cyfr liczby</h3>
+            <span class="task-meter task-meter--hard" role="img" aria-label="Trudność: wysoka"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+          </div>
+          <p class="task-body">
+            Napisz funkcję <code>int sumaCyfr(int n)</code>, która dla liczby <strong>nieujemnej</strong> <code>n</code> zwraca sumę jej cyfr w systemie dziesiętnym.
+            Przykład: <code>n = 308</code> → cyfry 3, 0, 8 → wynik <code>11</code>. W <code>main</code> wczytaj <code>n</code> i wypisz wynik funkcji.
+          </p>
+          <p class="task-body" style="margin-top:12px;">
+            <strong>Na plus:</strong> upewnij się, że dla <code>n == 0</code> wynik to <code>0</code> (to dobry test, czy pętla i suma są pomyślane).
+          </p>
+          <p class="task-hint">
+            <strong>Wskazówka algorytmiczna:</strong> w pętli <code>while</code> bierz ostatnią cyfrę przez <code>n % 10</code>, dodawaj do sumy,
+            potem <code>n = n / 10</code> (dzielenie całkowite). Pętla kończy się, gdy <code>n</code> spadnie do zera — ale osobno obsłuż samo zero na początku, jeśli Twój kod tego potrzebuje.
+          </p>
+          <p class="task-nudge">
+            <strong>Podpowiedź na start:</strong> weź liczbę z zadania (np. 308) i na kartce rozpisz: ostatnia cyfra to ile? potem „ucięta” liczba bez ostatniej cyfry to ile? — tak kilka razy, aż dojdiesz do zera. To jest dokładnie to, co ma robić pętla w programie: „weź ostatnią cyfrę”, „dodaj do sumy”, „usuń ostatnią cyfrę”.
+            Ostatnia cyfra to zawsze reszta z dzielenia przez 10 (<code>% 10</code>) — czyli bierzesz cyfrę od <strong>prawej strony</strong> zapisu, nie od lewej.
+            Dla zera policz w głowie: suma cyfr to 0. Jak masz warunek pętli typu „dopóki liczba jest większa od zera”, to przy zerze pętla się nie wykona i suma zostaje 0 — często to już jest dobre rozwiązanie, bez dokładania drugiego, skomplikowanego warunku „tylko dla zera”.
+            Jak po funkcji chcesz jeszcze raz pokazać użytkownikowi tę samą liczbę, którą wpisał, zapamiętaj ją w <code>main</code> w osobnej zmiennej <strong>przed</strong> wywołaniem funkcji (bo w środku funkcji liczba może się „kurczyć” krok po kroku).
+          </p>
+        </article>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    const input = document.getElementById('powerInput');
+    const resultBox = document.getElementById('resultBox');
+    const funResultBox = document.getElementById('funResultBox');
+    const root = document.documentElement;
+
+    let colorStep = 0;
+    let heroLevel = 1;
+    let heroXp = 0;
+    const xpNeeded = 30;
+
+    function pobierzLiczbe() {
+      const value = Number(input.value);
+      if (Number.isNaN(value) || value < 0) {
+        return 0;
+      }
+      return value;
+    }
+
+    function animateBox(box) {
+      box.classList.remove('result-animate');
+      void box.offsetWidth;
+      box.classList.add('result-animate');
+    }
+
+    function pokazWynik(tag, text, numberValue, barPercent, hashes) {
+      resultBox.innerHTML = `
+        <div class="result-tag">${tag}</div>
+        <div class="result-text">${text}</div>
+        <div class="result-number">${numberValue}</div>
+        <div class="power-bar-wrap">
+          <div class="power-bar" id="powerBarInner" style="width: 0%;"></div>
+        </div>
+        <div class="hash-bar">${hashes}</div>
+      `;
+
+      animateBox(resultBox);
+
+      const innerBar = document.getElementById('powerBarInner');
+      requestAnimationFrame(() => {
+        innerBar.style.width = `${barPercent}%`;
+      });
+    }
+
+    function pokazFunWynik(tag, text, numberValue, extra) {
+      funResultBox.innerHTML = `
+        <div class="result-tag">${tag}</div>
+        <div class="result-text">${text}</div>
+        <div class="result-number">${numberValue}</div>
+        <div class="hash-bar">${extra}</div>
+      `;
+      animateBox(funResultBox);
+    }
+
+    function policzKwadrat() {
+      const x = pobierzLiczbe();
+      const wynik = x * x;
+      const procent = Math.min(wynik, 100);
+      const hashes = '#'.repeat(Math.max(1, Math.min(x, 20)));
+      pokazWynik('Funkcja: kwadrat', `Liczba ${x} do kwadratu daje ${wynik}.`, wynik, procent, hashes);
+    }
+
+    function podwojMoc() {
+      const x = pobierzLiczbe();
+      const wynik = x * 2;
+      const procent = Math.min(wynik, 100);
+      const hashes = '#'.repeat(Math.max(1, Math.min(wynik, 20)));
+      pokazWynik('Funkcja: podwoj', `Podwojona moc dla liczby ${x} to ${wynik}.`, wynik, procent, hashes);
+    }
+
+    function pokazPasekMocy() {
+      const x = pobierzLiczbe();
+      const ograniczona = Math.max(1, Math.min(x, 20));
+      const hashes = '#'.repeat(ograniczona);
+      const procent = Math.min(x * 5, 100);
+      pokazWynik('Funkcja: pasekMocy', `Dla liczby ${x} pasek mocy wygląda tak: ${hashes}`, x, procent, hashes);
+    }
+
+    function losujMoc() {
+      const moc = Math.floor(Math.random() * 100) + 1;
+      const ikony = '⚡'.repeat(Math.max(1, Math.min(Math.ceil(moc / 10), 10)));
+      pokazFunWynik('Funkcja: losujMoc', `Wylosowana moc postaci to ${moc}.`, moc, ikony);
+    }
+
+    function czyPierwsza() {
+      const x = pobierzLiczbe();
+      let pierwsza = x >= 2;
+      for (let i = 2; i < x; i++) {
+        if (x % i === 0) {
+          pierwsza = false;
+          break;
+        }
+      }
+
+      if (pierwsza) {
+        pokazFunWynik('Funkcja: czyPierwsza', `Liczba ${x} jest liczbą pierwszą.`, 'TAK', '✅ nie dzieli się przez inne liczby');
+      } else {
+        pokazFunWynik('Funkcja: czyPierwsza', `Liczba ${x} nie jest liczbą pierwszą.`, 'NIE', '❌ da się ją podzielić bez reszty');
+      }
+    }
+
+    function zmienKolor() {
+      const themes = [
+        {
+          bg: '#0a0f1f',
+          soft: '#11182d',
+          accent: '#4de2ff',
+          accent2: '#7dffb3'
+        },
+        {
+          bg: '#140b20',
+          soft: '#231235',
+          accent: '#b66cff',
+          accent2: '#6cf7ff'
+        },
+        {
+          bg: '#081915',
+          soft: '#112823',
+          accent: '#5dffb2',
+          accent2: '#7be0ff'
+        }
+      ];
+
+      colorStep = (colorStep + 1) % themes.length;
+      const current = themes[colorStep];
+      root.style.setProperty('--bg', current.bg);
+      root.style.setProperty('--bg-soft', current.soft);
+      root.style.setProperty('--accent', current.accent);
+      root.style.setProperty('--accent-2', current.accent2);
+
+      pokazFunWynik('Funkcja: zmienKolor', 'Funkcja zmieniła kolory panelu (motyw).', 'WOW', '🎨 nowy motyw aktywny');
+    }
+
+    function aktualizujBohatera(message) {
+      document.getElementById('heroLevelText').textContent = heroLevel;
+      document.getElementById('heroXpText').textContent = `${heroXp} / ${xpNeeded}`;
+      document.getElementById('heroMessage').textContent = message;
+      document.getElementById('xpBar').style.width = `${(heroXp / xpNeeded) * 100}%`;
+      animateBox(document.getElementById('heroBox'));
+    }
+
+    function sprawdzLevelUp() {
+      if (heroXp >= xpNeeded) {
+        heroXp = heroXp - xpNeeded;
+        heroLevel++;
+        aktualizujBohatera(`Level up! Bohater awansował na poziom ${heroLevel}.`);
+        return true;
+      }
+      return false;
+    }
+
+    function dodajXP() {
+      heroXp += 10;
+      const awans = sprawdzLevelUp();
+      if (!awans) {
+        aktualizujBohatera(`Bohater zdobył 10 XP. Jeszcze trochę do kolejnego poziomu.`);
+      }
+    }
+
+    function atakSpecjalny() {
+      const silaAtaku = heroLevel * 15;
+      aktualizujBohatera(`Atak specjalny zadał ${silaAtaku} punktów mocy!`);
+    }
+
+    function resetBohatera() {
+      heroLevel = 1;
+      heroXp = 0;
+      aktualizujBohatera('Bohater został zresetowany. Zaczynamy od początku.');
+    }
+
+    function pokazStatusBohatera() {
+      aktualizujBohatera(`Status: poziom ${heroLevel}, doświadczenie ${heroXp} z ${xpNeeded}.`);
+    }
+
+    aktualizujBohatera('Start gry: bohater czeka na ruch.');
+
+    (function () {
+      var panel = document.getElementById('lesson-extra-panel');
+      if (!panel) return;
+      function openExtraFromHash() {
+        var h = (location.hash || '').replace(/^#/, '');
+        if (h === 'lesson-extra-panel' || h === 'mini-gra') {
+          panel.open = true;
+          if (h === 'mini-gra') {
+            requestAnimationFrame(function () {
+              var el = document.getElementById('mini-gra');
+              if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+          }
+        }
+      }
+      openExtraFromHash();
+      window.addEventListener('hashchange', openExtraFromHash);
+    })();
+  </script>
+
+  <!--
+    Interaktywna strona o funkcjach w C++: wpisywanie liczb, przyciski = wywołania funkcji,
+    wynik w panelu, niżej przykłady w C++ i zadania do Dev-C++.
+  -->
+</body>
+</html>
+

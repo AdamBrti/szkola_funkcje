@@ -1,21 +1,21 @@
 # szkola_funkcje
 
-Statyczna strona (HTML): interaktywny panel do ćwiczenia funkcji w C++. Pliki strony leżą w **`public/`**, żeby deploy na Pages nie wysyłał na CDN całego repozytorium (np. `.github`).
+Statyczna strona (HTML): interaktywne tematy z programowania w C++ dla klasy 8 szkoły podstawowej. Pliki strony leżą w **`public/`**, żeby deploy na Pages publikował tylko gotową stronę.
 
 ## Cloudflare Pages
 
-Wdrożenie z katalogu **`public`** (bez kroku build).
+Wdrożenie z katalogu **`public`** (bez kroku build). Repozytorium nie używa GitHub Actions do deployu.
 
-### Opcja A — GitHub Actions (automat po `push` na `main`)
+### Opcja A — Cloudflare Pages z Git
 
-1. W Cloudflare: **My Profile → API Tokens** — utwórz token z uprawnieniami **Cloudflare Pages — Edit** (oraz **Account Settings — Read**, żeby odczytać konto).
-2. W GitHub: **Settings → Secrets and variables → Actions** — dodaj:
-   - `CLOUDFLARE_API_TOKEN` — wartość tokena
-   - `CLOUDFLARE_ACCOUNT_ID` — **Overview** konta w panelu Cloudflare (prawy sidebar)
-3. Pierwszy raz w Cloudflare możesz utworzyć pusty projekt **Pages** o nazwie `szkola-funkcje` albo pozwolić, aby pierwszy deploy z Wranglera go zarejestrował (zależnie od konta — jeśli deploy się poskarży, utwórz projekt ręcznie z tą samą nazwą).
-4. Wypchnij kod na `main` — workflow `.github/workflows/deploy-cloudflare-pages.yml` wykona `wrangler pages deploy public`.
+W Cloudflare **Workers & Pages → Create → Pages → Connect to Git**:
 
-Jeśli zmienisz nazwę projektu w Cloudflare, zaktualizuj parametr `--project-name=` w workflow.
+- Repository: `AdamBrti/szkola_funkcje`
+- Framework preset: **None**
+- Build command: puste
+- Build output directory: `public`
+
+Każdy push na `main` uruchomi deploy po stronie Cloudflare Pages.
 
 ### Opcja B — tylko z komputera (Wrangler)
 
@@ -46,6 +46,10 @@ git branch -M main
 git push -u origin main
 ```
 
-### Pages tylko z panelu (bez Actions)
+## Struktura
 
-W Cloudflare **Workers & Pages → Create → Connect to Git** — repozytorium `AdamBrti/szkola_funkcje`, preset **None**, **Build command** puste, **Build output directory** `public`.
+- `public/index.html` — strona główna z kartami tematów
+- `public/funkcje.html` — temat: funkcje w C++
+- `public/tablice.html` — temat: tablice w C++
+- `public/_headers` — podstawowe nagłówki dla Cloudflare Pages
+- `wrangler.jsonc` — lokalna konfiguracja pod deploy przez Wrangler
