@@ -443,6 +443,84 @@
       padding: 16px;
     }
 
+    .criteria-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .criteria-card {
+      background: rgba(255,255,255,.08);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    .criteria-card--strong {
+      border-color: rgba(34,197,94,.45);
+      background: rgba(34,197,94,.08);
+    }
+
+    .criteria-card--perfect {
+      border-color: rgba(167,139,250,.5);
+      background: rgba(167,139,250,.09);
+    }
+
+    .criteria-card h3 {
+      margin: 0 0 12px;
+    }
+
+    .criteria-card ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .criteria-card li + li {
+      margin-top: 6px;
+    }
+
+    .grade-scale {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+      margin: 18px 0 0;
+    }
+
+    .grade-scale th,
+    .grade-scale td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    .grade-scale th {
+      background: rgba(2, 6, 23, 0.5);
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .grade-scale tr:nth-child(even) td {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .grade-scale .num {
+      width: 52px;
+      text-align: center;
+      font-weight: 1000;
+      color: var(--accent);
+    }
+
+    .callout {
+      border-left: 4px solid var(--accent2);
+      padding: 14px 0 14px 18px;
+      margin: 16px 0 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
     .floating-score {
       position: fixed;
       right: 18px;
@@ -472,6 +550,7 @@
       .lesson-map { grid-template-columns: 1fr; }
       .array-row { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
       .summary-list { grid-template-columns: 1fr; }
+      .criteria-grid { grid-template-columns: 1fr; }
       .topbar-inner { align-items: flex-start; flex-direction: column; }
       .progress-wrap { width: 100%; max-width: none; }
     }
@@ -554,6 +633,7 @@
         <a class="site-nav__link" href="index.html">Start</a>
         <a class="site-nav__link" href="funkcje.html">Funkcje</a>
         <a class="site-nav__link site-nav__link--active" href="tablice.html">Tablice</a>
+        <a class="site-nav__link" href="powtorka.html">Powtórka</a>
       </div>
     </div>
   </nav>
@@ -582,7 +662,77 @@
         <div class="map-item"><strong>1. Problem</strong><span>Dlaczego jedna zmienna to za mało?</span></div>
         <div class="map-item"><strong>2. Tablica</strong><span>Szafka z indeksami od zera.</span></div>
         <div class="map-item"><strong>3. Kod</strong><span>Deklaracja, wprowadzanie i wypisywanie.</span></div>
-        <div class="map-item"><strong>4. Quiz</strong><span>Wynik, procent i ocena 3–6.</span></div>
+        <div class="map-item"><strong>4. Zasady ocen</strong><span>Skala 1–6, minimum i „dalsza droga”.</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="minimum" data-section>
+      <h2>Na początku: jak w szkole mówi się o stopniach?</h2>
+      <p>
+        W polskiej szkole podstawowej wyróżnia się
+        <strong>6 stopni</strong> w skali od 1 do 6
+        (w świetle wymogów wynikających m.in. z systemu oświaty i rozporządzeń MEN o ocenianiu
+        wewnątrzszkolnym). Krótko, żebyśmy mówili tym samym językiem:
+      </p>
+      <table class="grade-scale" role="table" aria-label="Skala ocen w szkole podstawowej">
+        <thead>
+          <tr>
+            <th class="num">St.</th>
+            <th>Opis słowny w polskiej szkole (skrót)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">6</td><td><strong>celujący</strong> (ponad wymagania) — widać nie tylko spełnienie zadań, ale pewną swobodę w temacie</td></tr>
+          <tr><td class="num">5</td><td><strong>bardzo dobry</strong> — rozumiesz, stosujesz, osiągasz założone wymagania w praktyce</td></tr>
+          <tr><td class="num">4</td><td><strong>dobry</strong> — widać opanowanie, choć zdarzają się pomyłki albo niedociągnięcia</td></tr>
+          <tr><td class="num">3</td><td><strong>dostateczny</strong> — spełniasz podstawowe wymagania, ale słabiej w szczegółach albo w samodzielności</td></tr>
+          <tr><td class="num">2</td><td><strong>mierny</strong> — wymagania tylko częściowo; widać, że temat wymaga solidnej powtórki i wsparcia</td></tr>
+          <tr><td class="num">1</td><td><strong>niedostateczny</strong> — wymagania w dużym stopniu niespełnione; wymagana dalsza, systematyczna pomoc nauczyciela (zgodnie z zasadami w szkole)</td></tr>
+        </tbody>
+      </table>
+      <p class="callout">
+        Na tej stronie z quizu wyskoczy <strong>propozycja</strong> stopnia — tak jak podpowiedź.
+        W klasie ostateczne znaczenie ma rozmowa z nauczycielem, zadania w Dev-C++ i obserwacja na lekcji
+        (zgodnie z zasadami, które macie w szkole: kryteria w szkole mogą być dopisane w regulaminie czy
+        w zasadach oceniania).
+      </p>
+
+      <h2 style="margin-top: 1.4em">Minimum w tym temacie — na „bardzo dobry” (5)</h2>
+      <p>
+        To jest pula umiejętności, którą możesz ogarniać tylko z tych slajdów, quizu i ćwiczeń: nic tu nie musi
+        być tajemnicą, dopóki ćwiczysz. Chodzi o to, żeby tablica, indeksy od zera i pętla
+        <code>for</code> nie były dla Ciebie „magią”, tylko planem działania.
+      </p>
+      <div class="criteria-grid">
+        <div class="criteria-card criteria-card--strong">
+          <h3>Minimum, które tu masz wypisane wprost (cel: stopień 5 w tym zagadnieniu)</h3>
+          <ul>
+            <li>Wyjaśniasz, po co jest tablica, gdy jedna zmienna nie wystarcza.</li>
+            <li>Zapisujesz deklarację, np. <code>int a[5];</code> albo <code>int dane[10];</code>.</li>
+            <li>Wiesz, że pierwszy indeks to <code>0</code>, a ostatni to <code>liczba elementów − 1</code>.</li>
+            <li>Odczytujesz i zapisujesz element przez <code>a[i]</code> i wiesz, o co chodzi w
+              <code>cin &gt;&gt; a[i]</code> oraz <code>cout &lt;&lt; a[i]</code> (są też w slajdach 5–6 i podsumowaniu).</li>
+            <li>Rozumiesz pętlę <code>for</code> po tablicy i wiesz, po co jest warunek
+              <code>i &lt; N</code>, żeby pętla <strong>nie wyszła poza tablicę</strong> (sekcja 5 tłumaczy
+              pętlę; samodzielnie: śledzisz <code>i</code> w głowie lub na kartce).</li>
+            <li>Potrafisz w kilku zdaniach <strong>powiedzieć, co dziś robi w programie</strong>
+              <code>main</code> i do czego służą funkcje <code>wprowadz_dane</code> i
+              <code>wyprowadz_dane</code> w pełnym przykładzie (sekcja 7).</li>
+          </ul>
+        </div>
+        <div class="criteria-card criteria-card--perfect">
+          <h3>Najwyższy stopień? — tę część wymyśl sam</h3>
+          <p>
+            Czym jest u Ciebie w tym module <strong>„celująco”</strong> — czy pełne porządku w pętli, zero
+            wątpliwości przy ostatnim indeksie, naśladowanie pomyślnego planu, gdy czyta się kod, czy może
+            wytłumaczenie go komuś w klasie? Na tej stronie <strong>celowo</strong> nie wklejamy
+            <strong>gotowego spisu na 6</strong> — w szkole ten stopień ma opis (celujący) i
+            wychodzisz ponad wymagania; od Ciebie zależy, w czym w tym temacie chcesz być naprawdę
+            pewnym siebie. Pytania z gwiazdką w quizie (★) tylko pilnują minimum; reszta drogi to Twoje
+            zaangażowanie, dokładność w indeksach i łączenie slajdów 1–8 w jedną, spójną historię
+            w głowie.
+          </p>
+        </div>
       </div>
     </section>
 
@@ -752,7 +902,13 @@ a[<span class="num">0</span>], a[<span class="num">1</span>], ..., a[N - <span c
 
     <section class="section" id="quiz" data-section>
       <h2>9. Quiz końcowy</h2>
-      <p>Masz 5 minut. Po zakończeniu zobaczysz punkty, procent, ocenę i listę poprawnych oraz błędnych odpowiedzi.</p>
+      <p>
+        Masz 5 minut. Dostaniesz: punktację, procent, czy wszystkie pytania <strong>★</strong> (minimum ze slajdów)
+        są bezbłędne, oraz proponowaną ocenę w <strong>skali 1–6</strong> — tej samej, od której jest tabela
+        w pierwszej sekcji. <strong>Gotowej listy kroków tylko pod najwyższy stopień</strong> tu nie ma —
+        liczy się to, co przerabiasz w slajdach, Twój kod w Devie, rozmowa na lekcji i to, co macie
+        w szkolnych zasadach oceniania.
+      </p>
       <div class="quiz-head">
         <button class="good" id="startQuizBtn" onclick="startQuiz()">Rozpocznij quiz</button>
         <div class="timer" id="timer">05:00</div>
@@ -931,18 +1087,18 @@ a[<span class="num">0</span>], a[<span class="num">1</span>], ..., a[N - <span c
     }
 
     const quizQuestions = [
-      {q:'Co najlepiej opisuje tablicę?', a:['Jedna zmienna, która zawsze ma wartość 0','Zbiór kilku elementów pod jedną nazwą','Instrukcja kończąca program','Tylko tekst na ekranie'], c:1},
-      {q:'Od jakiego indeksu zaczyna się tablica w C++?', a:['Od 0','Od 1','Od -1','Od N'], c:0},
-      {q:'Ile elementów ma tablica int a[5];?', a:['4','5','6','Zależy od komputera'], c:1},
-      {q:'Jaki jest ostatni indeks tablicy int dane[8];?', a:['8','7','9','0'], c:1},
-      {q:'Co oznacza a[i]?', a:['Całą tablicę','Element tablicy o indeksie i','Nazwę programu','Błąd kompilacji zawsze'], c:1},
-      {q:'Która deklaracja tworzy tablicę 10 liczb całkowitych?', a:['int tab[10];','tab int[10];','int tab;','array tab 10;'], c:0},
-      {q:'Co robi instrukcja cin >> a[i];?', a:['Wypisuje element tablicy','Wpisuje wartość do elementu tablicy','Usuwa tablicę','Kończy pętlę'], c:1},
-      {q:'Co robi cout << a[i];?', a:['Wypisuje element tablicy','Wpisuje dane z klawiatury','Tworzy nową tablicę','Zmienia indeks na 0'], c:0},
-      {q:'Dlaczego w pętli często piszemy i < N, a nie i <= N?', a:['Bo ostatni indeks to N - 1','Bo C++ nie pozwala używać N','Bo i zawsze jest tekstem','Nie ma różnicy'], c:0},
-      {q:'Jakie indeksy ma tablica int a[3];?', a:['1, 2, 3','0, 1, 2','0, 1, 2, 3','3, 2, 1'], c:1},
-      {q:'Co oznacza void przy funkcji?', a:['Funkcja nic nie zwraca','Funkcja zwraca liczbę całkowitą','Funkcja jest tablicą','Funkcja działa tylko raz'], c:0},
-      {q:'Która pętla poprawnie przejdzie po tablicy 5-elementowej?', a:['for(int i = 0; i < 5; i++)','for(int i = 1; i <= 5; i++)','for(int i = 0; i <= 5; i++)','for(int i = 5; i < 0; i++)'], c:0}
+      {q:'Co najlepiej opisuje tablicę?', a:['Jedna zmienna, która zawsze ma wartość 0','Zbiór kilku elementów pod jedną nazwą','Instrukcja kończąca program','Tylko tekst na ekranie'], c:1, min:true},
+      {q:'Od jakiego indeksu zaczyna się tablica w C++?', a:['Od 0','Od 1','Od -1','Od N'], c:0, min:true},
+      {q:'Ile elementów ma tablica int a[5];?', a:['4','5','6','Zależy od komputera'], c:1, min:true},
+      {q:'Jaki jest ostatni indeks tablicy int dane[8];?', a:['8','7','9','0'], c:1, min:true},
+      {q:'Co oznacza a[i]?', a:['Całą tablicę','Element tablicy o indeksie i','Nazwę programu','Błąd kompilacji zawsze'], c:1, min:true},
+      {q:'Która deklaracja tworzy tablicę 10 liczb całkowitych?', a:['int tab[10];','tab int[10];','int tab;','array tab 10;'], c:0, min:true},
+      {q:'Co robi instrukcja cin >> a[i];?', a:['Wypisuje element tablicy','Wpisuje wartość do elementu tablicy','Usuwa tablicę','Kończy pętlę'], c:1, min:true},
+      {q:'Co robi cout << a[i];?', a:['Wypisuje element tablicy','Wpisuje dane z klawiatury','Tworzy nową tablicę','Zmienia indeks na 0'], c:0, min:true},
+      {q:'Dlaczego w pętli często piszemy i < N, a nie i <= N?', a:['Bo ostatni indeks to N - 1','Bo C++ nie pozwala używać N','Bo i zawsze jest tekstem','Nie ma różnicy'], c:0, min:true},
+      {q:'Jakie indeksy ma tablica int a[3];?', a:['1, 2, 3','0, 1, 2','0, 1, 2, 3','3, 2, 1'], c:1, min:true},
+      {q:'Co oznacza void przy funkcji?', a:['Funkcja nic nie zwraca','Funkcja zwraca liczbę całkowitą','Funkcja jest tablicą','Funkcja działa tylko raz'], c:0, min:false},
+      {q:'Która pętla poprawnie przejdzie po tablicy 5-elementowej?', a:['for(int i = 0; i < 5; i++)','for(int i = 1; i <= 5; i++)','for(int i = 0; i <= 5; i++)','for(int i = 5; i < 0; i++)'], c:0, min:false}
     ];
 
     let quizStarted = false;
@@ -954,7 +1110,7 @@ a[<span class="num">0</span>], a[<span class="num">1</span>], ..., a[N - <span c
       const form = document.getElementById('quizForm');
       form.innerHTML = quizQuestions.map((item, i) => `
         <div class="question">
-          <h3>${i + 1}. ${item.q}</h3>
+          <h3>${i + 1}. ${item.min ? '★ ' : ''}${item.q}</h3>
           <div class="answers">
             ${item.a.map((ans, j) => `
               <label class="answer">
@@ -1000,29 +1156,34 @@ a[<span class="num">0</span>], a[<span class="num">1</span>], ..., a[N - <span c
       document.getElementById('retryQuizBtn').classList.remove('hidden');
 
       let score = 0;
+      let minimumScore = 0;
+      const minimumQuestions = quizQuestions.filter(item => item.min).length;
       let review = '';
       quizQuestions.forEach((item, i) => {
         const selected = document.querySelector(`input[name="q${i}"]:checked`);
         const selectedIndex = selected ? Number(selected.value) : -1;
         const ok = selectedIndex === item.c;
         if (ok) score++;
+        if (item.min && ok) minimumScore++;
         review += `
           <div class="review-item ${ok ? 'correct' : 'wrong'}">
-            <strong>${i + 1}. ${item.q}</strong><br>
+            <strong>${i + 1}. ${item.min ? '★ ' : ''}${item.q}</strong><br>
             Twoja odpowiedź: ${selectedIndex >= 0 ? item.a[selectedIndex] : 'brak odpowiedzi'}<br>
             Poprawna odpowiedź: <strong>${item.a[item.c]}</strong>
           </div>`;
       });
 
       const percent = Math.round((score / quizQuestions.length) * 100);
-      const grade = getGrade(percent);
+      const minimumPassed = minimumScore === minimumQuestions;
+      const grade = getGrade(percent, minimumPassed);
       const results = document.getElementById('results');
       results.style.display = 'block';
       results.innerHTML = `
         <div class="mini-card">
           <div class="result-big">${score}/${quizQuestions.length} — ${percent}%</div>
           <h3>Proponowana ocena: ${grade}</h3>
-          <p>${getMessage(percent)}</p>
+          <p><strong>Minimum:</strong> ${minimumScore}/${minimumQuestions} ${minimumPassed ? '— bezbłędnie opanowane.' : '— wróć do pytań ze znakiem ★.'}</p>
+          <p>${getMessage(percent, minimumPassed)}</p>
         </div>
         <h3>Omówienie odpowiedzi</h3>
         ${review}
@@ -1030,20 +1191,32 @@ a[<span class="num">0</span>], a[<span class="num">1</span>], ..., a[N - <span c
       results.scrollIntoView({behavior: 'smooth', block: 'start'});
     }
 
-    function getGrade(percent) {
-      if (percent < 40) return 'do poprawy';
-      if (percent < 55) return '3';
-      if (percent < 75) return '4';
-      if (percent < 90) return '5';
-      return '6';
+    function getGrade(percent, minimumPassed) {
+      if (percent < 40) return '1–2 (niedostateczna / mierna) — wymagana mocna powtórka';
+      if (percent < 55) return '3 (dostateczna)';
+      if (percent < 75) return '4 (dobra)';
+      if (!minimumPassed) return '4 (dobra) — najpierw opanuj w całości pytania ★';
+      if (percent < 100) return '5 (bardzo dobra) — pełne minimum, czasem widać pomyłkę poza ★';
+      return '6 (celująca) — 100% w tym teście i wszystkie ★ bezbłędne';
     }
 
-    function getMessage(percent) {
-      if (percent < 40) return 'Warto powtórzyć: indeksy od zera, deklarację tablicy i pętlę for.';
-      if (percent < 55) return 'Podstawy są, ale trzeba jeszcze poćwiczyć.';
-      if (percent < 75) return 'Dobra robota. Rozumiesz większość tematu.';
-      if (percent < 90) return 'Bardzo dobrze. Tablice są już prawie opanowane.';
-      return 'Świetnie! Możesz tłumaczyć tablice innym.';
+    function getMessage(percent, minimumPassed) {
+      if (percent < 40) {
+        return 'Warto z slajdów 3–4 i 2 powtórzyć: deklarację, indeksy od zera i pętlę for.';
+      }
+      if (percent < 55) {
+        return 'Dajesz radę, ale widać, że tablica i pętla wymagają jeszcze ćwiczeń na kartce i w Devie.';
+      }
+      if (percent < 75) {
+        return 'Dobra robota — rozkładasz temat na elementy, dokładnie tak jak w tabeli na początku: jesteś blisko dobrej oceny.';
+      }
+      if (!minimumPassed) {
+        return 'Liczba procent fajna, ale minimum (pytania ★) wciąż wymaga powtórki. To jest Twoja półka, na której budujesz dalsze stopnie.';
+      }
+      if (percent < 100) {
+        return 'Bardzo dobrze. Minimum w quizie siedzi; mogą to potwierdzić tylko drobne zadania na lekcji.';
+      }
+      return 'Celująco w ramach tej strony: zero błędów w ★ i w całym teście. Taki styl na lekcji — w połączeniu z tym, co sami ustaliliście w szkole — odpowiada najwyższym oczekiwaniom.';
     }
 
     function resetQuiz() {

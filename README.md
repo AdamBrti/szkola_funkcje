@@ -51,5 +51,6 @@ git push -u origin main
 - `public/index.html` — strona główna z kartami tematów
 - `public/funkcje.html` — temat: funkcje w C++
 - `public/tablice.html` — temat: tablice w C++
+- `public/powtorka.html` — temat: powtórzenie (zmienne, funkcje, tablice)
 - `public/_headers` — podstawowe nagłówki dla Cloudflare Pages
 - `wrangler.jsonc` — lokalna konfiguracja pod deploy przez Wrangler

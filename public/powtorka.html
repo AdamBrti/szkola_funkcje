@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Powtórzenie C++ — Programowanie SP8</title>
+  <style>
+    :root {
+      --bg: #0a0f1f;
+      --card: rgba(18, 26, 46, 0.92);
+      --border: rgba(80, 225, 255, 0.22);
+      --text: #edf4ff;
+      --muted: #98a9c7;
+      --accent: #4de2ff;
+      --accent-2: #7dffb3;
+      --warn: #ffd76a;
+      --danger: #ff7aa2;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(77, 226, 255, 0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(255, 215, 106, 0.1), transparent 24%),
+        linear-gradient(180deg, #060b16 0%, #0a0f1f 55%, #0d1324 100%);
+      min-height: 100vh;
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(80, 225, 255, 0.18);
+      background: rgba(5, 11, 25, 0.86);
+      backdrop-filter: blur(16px);
+    }
+
+    .site-nav__inner {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .site-nav__brand {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .site-nav__links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .site-nav__link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 800;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .site-nav__link:hover,
+    .site-nav__link--active {
+      color: var(--accent);
+      border-color: rgba(77, 226, 255, 0.26);
+      background: rgba(77, 226, 255, 0.08);
+    }
+
+    .wrap {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0 56px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 28px 18px 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255, 215, 106, 0.08);
+      color: var(--warn);
+      font-weight: 800;
+      font-size: 0.92rem;
+    }
+
+    h1 {
+      margin: 18px auto 14px;
+      font-size: clamp(2rem, 5vw, 3.6rem);
+      line-height: 1.08;
+      max-width: 900px;
+    }
+
+    .hero p {
+      margin: 0 auto;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.14rem);
+      line-height: 1.75;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px;
+      margin-top: 24px;
+    }
+
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+    }
+
+    .card > p,
+    .tasks-intro {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .goals {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 18px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .goals li {
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(77, 226, 255, 0.12);
+      background: rgba(5, 11, 25, 0.55);
+      line-height: 1.55;
+      font-size: 0.98rem;
+    }
+
+    .goals li::before {
+      content: "✓ ";
+      color: var(--accent-2);
+      font-weight: 900;
+    }
+
+    .scope-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .scope-tag {
+      padding: 6px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(77, 226, 255, 0.18);
+      background: rgba(77, 226, 255, 0.06);
+      color: #dce9ff;
+      font-size: 0.84rem;
+      font-weight: 800;
+    }
+
+    .footer-note {
+      padding: 16px 18px;
+      border-left: 4px solid var(--accent);
+      background: rgba(77, 226, 255, 0.05);
+      border-radius: 14px;
+      color: #dce9ff;
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+
+    .code-card {
+      background: rgba(6, 10, 20, 0.95);
+      border: 1px solid rgba(77, 226, 255, 0.16);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .code-head {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(77, 226, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .code-head span { font-size: 0.88rem; color: var(--muted); }
+
+    pre {
+      margin: 0;
+      padding: 18px;
+      overflow-x: auto;
+      font-size: 0.98rem;
+      line-height: 1.75;
+      color: #e9f3ff;
+    }
+
+    code { font-family: Consolas, Monaco, "Courier New", monospace; }
+    .kw { color: #66e0ff; }
+    .type { color: #7dffb3; }
+    .fn { color: #ffd76a; }
+    .num { color: #ff9fce; }
+    .cm { color: #7f93b3; }
+
+    .task-stack { display: flex; flex-direction: column; gap: 18px; }
+
+    .task-item {
+      background: rgba(6, 10, 20, 0.88);
+      border: 1px solid rgba(77, 226, 255, 0.14);
+      border-radius: 18px;
+      padding: 20px 22px;
+    }
+
+    .task-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 14px;
+      margin-bottom: 12px;
+    }
+
+    .task-num {
+      font-weight: 900;
+      font-size: 1.05rem;
+      color: var(--accent);
+      min-width: 2.2em;
+    }
+
+    .task-title { margin: 0; font-size: 1.12rem; flex: 1 1 200px; }
+
+    .task-meter {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 3px;
+      flex-shrink: 0;
+      height: 26px;
+      padding: 3px 6px 4px;
+      border-radius: 10px;
+      background: rgba(5, 11, 25, 0.55);
+      border: 1px solid rgba(77, 226, 255, 0.14);
+    }
+
+    .task-meter__bar {
+      width: 8px;
+      height: 18px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .task-meter--easy .task-meter__bar:nth-child(-n + 2) {
+      background: linear-gradient(180deg, #b8ffd9, var(--accent-2));
+    }
+
+    .task-meter--mid .task-meter__bar:nth-child(-n + 3) {
+      background: linear-gradient(180deg, #fff0c2, var(--warn));
+    }
+
+    .task-meter--hard .task-meter__bar:nth-child(-n + 5) {
+      background: linear-gradient(180deg, #ffc8de, var(--danger));
+    }
+
+    .task-body {
+      margin: 0;
+      color: #dce9ff;
+      line-height: 1.75;
+    }
+
+    .task-hint {
+      margin: 14px 0 0;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(77, 226, 255, 0.06);
+      border: 1px solid rgba(77, 226, 255, 0.12);
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+
+    .task-item--bonus {
+      border-color: rgba(255, 215, 106, 0.28);
+      background: rgba(255, 215, 106, 0.04);
+    }
+
+    .example-io {
+      margin: 12px 0 0;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: rgba(5, 11, 25, 0.75);
+      border: 1px solid rgba(77, 226, 255, 0.1);
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.92rem;
+      line-height: 1.65;
+      color: #c8dff0;
+      white-space: pre-wrap;
+    }
+
+    @media (max-width: 700px) {
+      .site-nav__inner { align-items: flex-start; flex-direction: column; padding: 12px 0; }
+      .site-nav__links { justify-content: flex-start; }
+      .goals { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Tematy programowania">
+    <div class="site-nav__inner">
+      <a class="site-nav__brand" href="index.html">Programowanie SP8</a>
+      <div class="site-nav__links">
+        <a class="site-nav__link" href="index.html">Start</a>
+        <a class="site-nav__link" href="funkcje.html">Funkcje</a>
+        <a class="site-nav__link" href="tablice.html">Tablice</a>
+        <a class="site-nav__link site-nav__link--active" href="powtorka.html">Powtórka</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <header class="hero">
+      <div class="badge">Temat 3 — powtórzenie</div>
+      <h1>Powtórzenie C++: zmienne, funkcje i tablice</h1>
+      <p>
+        Sześć zadań w Dev-C++ łączy materiał z całego roku: od <code>cin</code> i <code>cout</code>,
+        przez funkcje z parametrami, po tablice i pętle. Zrób je po kolei — każde utrwala inny fragment.
+      </p>
+    </header>
+
+    <section class="card" aria-labelledby="cele">
+      <h2 id="cele">Po tej lekcji umiesz</h2>
+      <ul class="goals">
+        <li>zadeklarować zmienne różnych typów</li>
+        <li>pobierać dane od użytkownika (<code>cin</code>)</li>
+        <li>napisać prostą funkcję i przekazać do niej dane</li>
+        <li>utworzyć tablicę i przejść po niej w pętli</li>
+        <li>rozwiązać proste zadanie algorytmiczne w C++</li>
+      </ul>
+    </section>
+
+    <section class="card" id="zadania-cpp">
+      <h2>Zadania w Dev-C++</h2>
+      <p class="tasks-intro">
+        Każde zadanie możesz zapisać jako osobną funkcję wywoływaną z <code>main</code>
+        albo jako osobny program — wybierz to, co wolisz na lekcji.
+        Na dole jest szablon pliku z miejscami na nagłówki funkcji.
+      </p>
+
+      <div class="footer-note">
+        <strong>Start:</strong> Plik → Nowy → Projekt → <em>Console Application</em> → C++.
+        Na górze: <code>#include &lt;iostream&gt;</code>.
+        Kompilacja i uruchomienie: często <strong>F9</strong> w Dev-C++.
+      </div>
+
+      <h3 style="margin:20px 0 10px; font-size:1.1rem;">Szablon pliku</h3>
+
+      <article class="code-card">
+        <div class="code-head">
+          <strong>main.cpp — szkielet</strong>
+          <span>uzupełnij nagłówki i ciała</span>
+        </div>
+        <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+<span class="cm">// Zadanie 1</span>
+
+
+{
+
+}
+
+<span class="cm">// Zadanie 2: bool czyPelnoletni(int wiek)</span>
+
+
+{
+
+}
+
+<span class="cm">// Zadanie 3: int najwieksza(int a, int b, int c)</span>
+
+
+{
+
+}
+
+<span class="cm">// Zadanie 4 — tablica 5 ocen (może być w main lub osobna funkcja)</span>
+
+
+<span class="cm">// Zadanie 5 — 10 liczb, licznik parzystych</span>
+
+
+<span class="cm">// Zadanie 6: double srednia(int tab[], int rozmiar)</span>
+
+
+{
+
+}
+
+int main()
+{
+    <span class="cm">// wywołaj kolejne zadania — po jednym na start, potem łącz</span>
+    return 0;
+}</code></pre>
+      </article>
+
+      <div class="task-stack">
+        <article class="task-item">
+          <div class="task-top">
+            <span class="task-num">1</span>
+            <h3 class="task-title">Kalkulator punktów</h3>
+            <span class="task-meter task-meter--easy" aria-label="Trudność: niska"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+          </div>
+          <p class="task-body">
+            Program pobiera liczbę punktów z testu oraz maksymalną liczbę punktów.
+            Oblicza procent wyniku i wypisuje go (np. <code>90%</code>).
+            Użyj typu <code>double</code> przy dzieleniu, żeby wynik był dokładny.
+          </p>
+          <div class="example-io">Podaj zdobyte punkty: 36
+Podaj maksymalna liczbe punktow: 40
+Wynik: 90%</div>
+          <div class="scope-tags">
+            <span class="scope-tag">zmienne</span>
+            <span class="scope-tag">cin / cout</span>
+            <span class="scope-tag">double</span>
+          </div>
+          <p class="task-hint"><strong>Wzór:</strong> procent = (zdobyte / maks) * 100. Dziel przez <code>double</code>, nie przez same <code>int</code>.</p>
+        </article>
+
+        <article class="task-item">
+          <div class="task-top">
+            <span class="task-num">2</span>
+            <h3 class="task-title">Czy pełnoletni?</h3>
+            <span class="task-meter task-meter--easy" aria-label="Trudność: niska"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+          </div>
+          <p class="task-body">
+            Napisz funkcję <code>bool czyPelnoletni(int wiek)</code> — zwraca <code>true</code>,
+            gdy wiek ≥ 18, w przeciwnym razie <code>false</code>.
+            W <code>main</code> wczytaj wiek i wypisz komunikat (np. „Jestes pelnoletni” / „Nie jestes pelnoletni”).
+          </p>
+          <div class="scope-tags">
+            <span class="scope-tag">funkcje</span>
+            <span class="scope-tag">bool</span>
+            <span class="scope-tag">if</span>
+          </div>
+        </article>
+
+        <article class="task-item">
+          <div class="task-top">
+            <span class="task-num">3</span>
+            <h3 class="task-title">Największa z trzech</h3>
+            <span class="task-meter task-meter--mid" aria-label="Trudność: średnia"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+          </div>
+          <p class="task-body">
+            Funkcja <code>int najwieksza(int a, int b, int c)</code> zwraca największą z trzech liczb.
+            W <code>main</code> wczytaj trzy liczby i wypisz wynik.
+          </p>
+          <div class="example-io">Podaj trzy liczby: 4 12 7
+Najwieksza liczba to: 12</div>
+          <div class="scope-tags">
+            <span class="scope-tag">parametry</span>
+            <span class="scope-tag">return</span>
+            <span class="scope-tag">porównania</span>
+          </div>
+        </article>
+
+        <article class="task-item">
+          <div class="task-top">
+            <span class="task-num">4</span>
+            <h3 class="task-title">Tablica ocen</h3>
+            <span class="task-meter task-meter--mid" aria-label="Trudność: średnia"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+          </div>
+          <p class="task-body">
+            Utwórz tablicę 5 ocen. Wczytaj oceny od użytkownika, oblicz średnią,
+            wypisz wszystkie oceny i średnią (średnia jako liczba z przecinkiem — <code>double</code>).
+          </p>
+          <div class="example-io">Podaj 5 ocen:
+5 4 3 5 4
+
+Oceny: 5 4 3 5 4
+Srednia: 4.2</div>
+          <div class="scope-tags">
+            <span class="scope-tag">tablice</span>
+            <span class="scope-tag">for</span>
+            <span class="scope-tag">średnia</span>
+          </div>
+          <p class="task-hint"><strong>Indeksy:</strong> tablica 5-elementowa: indeksy od <code>0</code> do <code>4</code>.</p>
+        </article>
+
+        <article class="task-item">
+          <div class="task-top">
+            <span class="task-num">5</span>
+            <h3 class="task-title">Ile liczb parzystych?</h3>
+            <span class="task-meter task-meter--mid" aria-label="Trudność: średnia"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+          </div>
+          <p class="task-body">
+            Wczytaj 10 liczb do tablicy. Policz, ile z nich jest parzystych, i wypisz wynik.
+            Liczba parzysta: reszta z dzielenia przez 2 równa się zero (<code>n % 2 == 0</code>).
+          </p>
+          <div class="example-io">Liczb parzystych jest: 6</div>
+          <div class="scope-tags">
+            <span class="scope-tag">tablice</span>
+            <span class="scope-tag">%</span>
+            <span class="scope-tag">licznik</span>
+          </div>
+        </article>
+
+        <article class="task-item">
+          <div class="task-top">
+            <span class="task-num">6</span>
+            <h3 class="task-title">Średnia z tablicy — funkcja</h3>
+            <span class="task-meter task-meter--hard" aria-label="Trudność: wyższa"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+          </div>
+          <p class="task-body">
+            Napisz <code>double srednia(int tab[], int rozmiar)</code> — zwraca średnią elementów tablicy.
+            W <code>main</code>: tablica 6 liczb, wczytanie od użytkownika, wywołanie funkcji, wypisanie wyniku.
+          </p>
+          <div class="scope-tags">
+            <span class="scope-tag">tablica jako argument</span>
+            <span class="scope-tag">pętla</span>
+            <span class="scope-tag">double</span>
+          </div>
+          <p class="task-hint"><strong>Przypomnienie:</strong> suma w <code>int</code> lub <code>double</code>, na końcu podziel przez <code>rozmiar</code>.</p>
+        </article>
+
+        <article class="task-item task-item--bonus">
+          <div class="task-top">
+            <span class="task-num">+</span>
+            <h3 class="task-title">Mini statystyka klasy</h3>
+            <span class="task-meter task-meter--hard" aria-label="Trudność: wysoka"><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span><span class="task-meter__bar"></span></span>
+          </div>
+          <p class="task-body">
+            Wczytaj oceny 10 uczniów do tablicy. Wypisz:
+          </p>
+          <ul class="task-body" style="margin-top:8px;">
+            <li>średnią ocen,</li>
+            <li>najwyższą ocenę,</li>
+            <li>najniższą ocenę,</li>
+            <li>liczbę ocen równych 6.</li>
+          </ul>
+          <div class="scope-tags">
+            <span class="scope-tag">zmienne</span>
+            <span class="scope-tag">funkcje</span>
+            <span class="scope-tag">tablice</span>
+            <span class="scope-tag">pętle</span>
+            <span class="scope-tag">warunki</span>
+          </div>
+          <p class="task-hint"><strong>Wskazówka:</strong> jedna pętla może jednocześnie sumować, szukać min/max i liczyć szóstki.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
